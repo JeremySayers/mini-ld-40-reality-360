@@ -46,7 +46,6 @@ public class Reality360 extends Applet {
 		/* End Of Full Screen Pop Out Class */
 		
 		Sound s = new Sound("/com/reality360/sounds/ChocRain8b.mp3");
-		s.play();
     }
 
     public void setFullscreen(boolean fulls) {
