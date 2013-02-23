@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import com.reality360.levels.platform.Platform;
 import com.reality360.resource.Level;
 
 public class GamePanel extends JPanel {
@@ -31,6 +32,10 @@ public class GamePanel extends JPanel {
 			public void keyReleased(KeyEvent arg0) {
 				if (level!=null) {
 					level.keyReleased(arg0);
+				} else if (arg0.getKeyCode()==KeyEvent.VK_P) {
+					level = new Platform();
+				} else if (arg0.getKeyCode()==KeyEvent.VK_B) {
+					level = new com.reality360.bth.Driver();
 				}
 			}
 		});
