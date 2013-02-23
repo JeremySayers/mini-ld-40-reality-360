@@ -195,7 +195,7 @@ public class Words {
 		".xx.."};
 	public static BufferedImage menuWord(String word, int LETTER_IMG_WIDTH, int LETTER_IMG_HEIGHT){
 		word=word.toUpperCase();
-		BufferedImage img = new BufferedImage(LETTER_IMG_WIDTH*word.length()+5*word.length(),LETTER_IMG_HEIGHT,BufferedImage.TYPE_INT_RGB);
+		BufferedImage img = new BufferedImage(LETTER_IMG_WIDTH*word.length()+5*word.length(),LETTER_IMG_HEIGHT,BufferedImage.TYPE_INT_ARGB);
 		Graphics g = img.getGraphics();
 		int xLoc=0;
 		for(int i=0; i<word.length(); i++){
@@ -206,7 +206,7 @@ public class Words {
 	}
 	private static BufferedImage getLetterImage(char c, int LETTER_IMG_WIDTH, int LETTER_IMG_HEIGHT){
 		switch(c){
-		case ' ': return new BufferedImage(LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT,BufferedImage.TYPE_INT_RGB);
+		case ' ': return new BufferedImage(LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT,BufferedImage.TYPE_INT_ARGB);
 		case 'A': return makeLetterImage(A,LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT);
 		case 'B': return makeLetterImage(B,LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT);
 		case 'C': return makeLetterImage(C,LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT);

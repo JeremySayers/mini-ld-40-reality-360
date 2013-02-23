@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import com.reality360.intro.Credits;
 import com.reality360.intro.Intro;
 import com.reality360.levels.platform.Platform;
 import com.reality360.resource.Level;

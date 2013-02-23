@@ -9,21 +9,60 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import com.reality360.GamePanel;
 import com.reality360.Reality360;
+import com.reality360.levels.platform.Platform;
+import com.reality360.menu.Menu;
+import com.reality360.menu.Menu.MenuFunction;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
 
 public class Intro extends Level {
-	private int tick;
-	private static final Image menu = Reality360.loadImage("/title.jpg");
+	public int ticks;
+	public int closedTicks = 0;
+	public boolean credits = false;
+	private static final Image menubg = Reality360.loadImage("/title.jpg");
+	private static final Menu menu = new Menu(" ");
+	private static int start = 0;
 	public Intro() {
-		tick = 0;
+		ticks = 1800;
+		menu.addSelection(new MenuFunction() {
+			public void run() {
+				GamePanel.level = new Platform();
+			}
+			public String name() {
+				return "Start";
+			}
+		});
+		menu.addSelection(new MenuFunction() {
+			public void run() {
+				credits = true;
+				start = ticks;
+			}
+			public String name() {
+				return "Credits";
+			}
+		});
+		menu.addSelection(new MenuFunction() {
+			public void run() {
+				
+			}
+			public String name() {
+				return "Settings";
+			}
+		});
 	}
 	public void keyPressed(KeyEvent e) {
 		
 	}
 	public void keyReleased(KeyEvent e) {
-		
+		if (e.getKeyCode()==KeyEvent.VK_UP) {
+			menu.selectorUp();
+		} else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+			menu.selectorDown();
+		} else if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+			menu.select();
+		}
 	}
 	public void mousePressed(MouseEvent e) {
 		
@@ -37,7 +76,7 @@ public class Intro extends Level {
 		FontMetrics fm = g.getFontMetrics();
 		int x = 5;
 		int y = fm.getHeight();
-		int t = tick;
+		int t = ticks;
 		int d = 20;
 		String msg = ">";
 		x += paintLine(g, msg, x, y, t, d);
@@ -90,7 +129,7 @@ public class Intro extends Level {
 				}
 				d = 20;
 			}
-			msg = new String[]{"|","/","-","\\"}[tick%40/10];
+			msg = new String[]{"|","/","-","\\"}[ticks%40/10];
 			x = Reality360.WIDTH-fm.stringWidth("]");
 			g.drawString("]", x, y);
 			x -= fm.stringWidth("[M");
@@ -110,7 +149,9 @@ public class Intro extends Level {
 					g.fillRect(Reality360.WIDTH/2-w/2, Reality360.HEIGHT/2-5, w, 10);
 					if (w>=Reality360.WIDTH) {
 						t -= 200;
-						g.drawImage(menu, 0, 0, null);
+						closedTicks = ticks-t;
+						g.drawImage(menubg, 0, 0, null);
+						menu.paintMenu(g);
 						h = (int)(Reality360.HEIGHT/2 - Reality360.HEIGHT/2*(t/100.0));
 						g.setColor(Color.BLACK);
 						g.fillRect(0, 0, Reality360.WIDTH, h-5);
@@ -118,6 +159,7 @@ public class Intro extends Level {
 						g.setColor(Color.GREEN);
 						g.fillRect(0, h-5, Reality360.WIDTH, 5);
 						g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
+						t -= 100;
 					} else if (t%30>10) {
 						g.setColor(Color.WHITE);
 						BufferedImage word = Words.menuWord("Initializing...", 35, 35);
@@ -125,7 +167,22 @@ public class Intro extends Level {
 					}
 				}
 			}
-		} else if (tick%d>d/2) {
+			if (t>0 && credits) {
+				g.setColor(Color.BLACK);
+				int h = (int)(Reality360.HEIGHT/2*((ticks-start)/100.0));
+				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, Reality360.WIDTH, h-5);
+				g.fillRect(0, Reality360.HEIGHT-h+5, Reality360.WIDTH, h);
+				g.setColor(Color.GREEN);
+				g.fillRect(0, h-5, Reality360.WIDTH, 5);
+				g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
+				if (h>=Reality360.HEIGHT/2) {
+					GamePanel.level = new Credits(this);
+					credits = false;
+				}
+				t -= 100;
+			}
+		} else if (ticks%d>d/2) {
 			g.drawString("\u258D", x, y);
 		}
 	}
@@ -139,6 +196,6 @@ public class Intro extends Level {
 		return g.getFontMetrics().stringWidth(part);
 	}
 	public void tick() {
-		tick++;
+		ticks++;
 	}
 }

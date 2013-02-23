@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -49,6 +51,8 @@ public class Reality360 extends Applet {
 		
 		Sound s = new Sound("/com/reality360/sounds/ChocRain8b.mp3", true);
 		s.play();
+		
+		GAME.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "Blank"));
     }
 
     public void setFullscreen(boolean fulls) {
