@@ -9,9 +9,9 @@ import com.reality360.resource.Level;
 
 public class Driver extends Level{
 
-	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-	
+	public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+	public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	public final static PlayerShip player = new PlayerShip();
 	
 	public void paint(Graphics g) {
 		

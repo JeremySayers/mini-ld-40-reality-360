@@ -12,4 +12,13 @@ public class Enemy extends AI{
 		this.hitPoints = hitPoints;
 		
 	}
+	public void tick(){
+		xPos += moveX;
+		yPos += moveY;
+		tickCount++;
+		if((tickCount%(60/attackSpeed)==0) && (Math.abs(Driver.player.getX()-xPos)<=100)){
+			Driver.bullets.add(new Bullet(xPos,yPos,));//finish bullet vectors
+		}
+		if(tickCount==60)tickCount=0;
+	}
 }
