@@ -9,7 +9,7 @@ import com.reality360.resource.Level;
 
 public class Platform extends Level {
 	public Platform() {
-		
+		Player player = new Player();
 	}
 	public void keyPressed(KeyEvent e) {
 		

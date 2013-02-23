@@ -6,9 +6,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import com.reality360.Reality360;
+
 
 public class Player extends com.reality360.resource.Entity{
-	int x, y, height, width, xspeed, yspeed, jumprate;
+	int x, y, height, width, xspeed, jumprate;
 	boolean isAlive, isJumping;
 	final int X_START = 50;
 	final int Y_START = 550;
@@ -18,13 +20,26 @@ public class Player extends com.reality360.resource.Entity{
 		height = 30;
 		width = 30;
 	}
+	public void updatePlayerMovement(){
+		if (this.xspeed > 0){
+			this.x+= xspeed;
+		}
+		if (this.y>Reality360.HEIGHT-this.height){
+			this.isJumping = false;
+			this.y = Reality360.HEIGHT-this.height;
+		}
+		if (this.isJumping){
+			this.y -= jumprate;
+			jumprate--;
+		}
+	}
 	public void paint(Graphics g) {
 		g.setColor(Color.GREEN);
 		g.fillRect(x, y, width, height);
 	}
 
 	public void tick() {
-		
+		updatePlayerMovement();
 	}
 	
 	public int getX() {
@@ -41,8 +56,13 @@ public class Player extends com.reality360.resource.Entity{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getKeyCode() == e.VK_SPACE){
+			if (this.isJumping == false){
+				this.isJumping = true;
+				jumprate = 20;
+			}
+
+		}
 	}
 	@Override
 	public void keyReleased(KeyEvent e) {
