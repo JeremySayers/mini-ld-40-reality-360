@@ -8,6 +8,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
@@ -16,6 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import com.reality360.sounds.Sound;
+import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Reality360 extends Applet {
 	public static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -63,6 +65,14 @@ public class Reality360 extends Applet {
                 GAME.requestFocus();
                 DEVICE.setFullScreenWindow(null); // Un-Associate popout with full screen.
         }
+    }
+    
+    public static Pixtact loadAsPixtact(String path) {
+    	try {
+    		return Pixtact.createFromImage(loadImage(path));
+    	} catch (Exception e) {
+    	}
+    	return null;
     }
     
     public static Image loadImage(String path) {
