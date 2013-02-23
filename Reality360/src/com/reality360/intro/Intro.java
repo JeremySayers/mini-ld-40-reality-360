@@ -25,7 +25,7 @@ public class Intro extends Level {
 	private static final Menu menu = new Menu(" ");
 	private static int start = 0;
 	public Intro() {
-		ticks = 1800;
+		ticks = 0;
 		menu.addSelection(new MenuFunction() {
 			public void run() {
 				GamePanel.level = new Platform();
