@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 public abstract class Level {
-	public abstract void init();
 	public abstract void paint(Graphics g);
 	public abstract void tick();
 }
