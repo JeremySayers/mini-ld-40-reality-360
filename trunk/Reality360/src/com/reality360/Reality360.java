@@ -8,8 +8,10 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
+import java.net.URL;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -60,7 +62,23 @@ public class Reality360 extends Applet {
     
     public static Image loadImage(String path) {
     	try {
-    		return new ImageIcon(Reality360.class.getResource(path)).getImage();
+    		return new ImageIcon(loadResource(path)).getImage();
+    	} catch (Exception e) {
+    	}
+    	return null;
+    }
+    
+    public static URL loadResource(String path) {
+    	try {
+    		return Reality360.class.getResource(path);
+    	} catch (Exception e) {
+    	}
+    	return null;
+    }
+    
+    public static AudioInputStream loadSound(String path) {
+    	try {
+    		return AudioSystem.getAudioInputStream(loadResource(path));
     	} catch (Exception e) {
     	}
     	return null;
