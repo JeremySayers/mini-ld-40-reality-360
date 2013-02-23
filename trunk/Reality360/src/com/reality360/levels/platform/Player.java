@@ -1,5 +1,6 @@
 package com.reality360.levels.platform;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -14,9 +15,12 @@ public class Player extends com.reality360.resource.Entity{
 	public Player(){
 		x = X_START;
 		y = Y_START;
+		height = 30;
+		width = 30;
 	}
 	public void paint(Graphics g) {
-		
+		g.setColor(Color.GREEN);
+		g.fillRect(x, y, width, height);
 	}
 
 	public void tick(Graphics g) {

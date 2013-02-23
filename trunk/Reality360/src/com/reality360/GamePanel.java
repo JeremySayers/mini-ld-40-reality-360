@@ -47,6 +47,13 @@ public class GamePanel extends JPanel {
 			}
 		});
 	}
+
+	public void tick() {
+		repaint();
+		if (level!=null) {
+			level.tick();
+		}
+	}
 	public void paintComponent(Graphics g) {
 		BG.setColor(Color.BLACK);
 		BG.fillRect(0, 0, BUFFER.getWidth(), BUFFER.getHeight());
@@ -54,11 +61,5 @@ public class GamePanel extends JPanel {
 			level.paint(BG);
 		}
 		g.drawImage(BUFFER, 0, 0, getWidth(), getHeight(), 0, 0, BUFFER.getWidth(), BUFFER.getHeight(), null);
-	}
-	public void tick() {
-		repaint();
-		if (level!=null) {
-			level.tick();
-		}
 	}
 }
