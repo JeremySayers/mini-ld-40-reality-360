@@ -30,7 +30,9 @@ public class AI {
 	public boolean isAlive(){
 		return isAlive;
 	}
-	public void paint(Graphics g){}
+	public void paint(Graphics g){
+		g.drawImage(img,width,height,xPos,yPos,null);
+	}
 	public void tick(){
 		xPos += moveX;
 		yPos += moveY;

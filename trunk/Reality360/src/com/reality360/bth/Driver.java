@@ -26,7 +26,13 @@ public class Driver extends Level{
 		
 	}
 	public void keyPressed(KeyEvent e) {
-		
+		switch(e.getKeyCode()){
+			case KeyEvent.VK_UP: break;
+			case KeyEvent.VK_DOWN: break;
+			case KeyEvent.VK_LEFT: break;
+			case KeyEvent.VK_RIGHT: break;
+			case KeyEvent.VK_SPACE: break;
+		}
 	}
 	public void keyReleased(KeyEvent e) {
 		
