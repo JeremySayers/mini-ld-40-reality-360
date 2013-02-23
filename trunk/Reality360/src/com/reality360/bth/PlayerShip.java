@@ -3,63 +3,51 @@ package com.reality360.bth;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import com.reality360.resource.Entity;
 
-public class Player_Ship extends Entity{
+public class PlayerShip extends Entity{
 
-	@Override
+	private BufferedImage img = null;
+	private int width = 0;
+	private int height = 0;
+	private int xPos = 0;
+	private int yPos = 0;
+	private int moveX = 0;
+	private int moveY = 0;
+	private long tickCount = 0;
+	private boolean isAlive = false;
+	
+	public PlayerShip(){
+		
+	}
+	
 	public int getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return xPos;
 	}
-
-	@Override
 	public int getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return yPos;
 	}
-
-	@Override
 	public boolean isAlive() {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
 	public void paint(Graphics g) {
-		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
 		
 	}
-
 }

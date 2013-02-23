@@ -12,6 +12,7 @@ public class AI {
 	protected int yPos = 0;
 	protected int moveX = 0;
 	protected int moveY = 0;
+	protected long tickCount = 0;
 	protected boolean isAlive = false;
 	
 	public AI(int xPos, int yPos, int moveX, int moveY){
