@@ -23,10 +23,10 @@ public class Player extends com.reality360.resource.Entity{
 		g.fillRect(x, y, width, height);
 	}
 
-	public void tick(Graphics g) {
+	public void tick() {
 		
 	}
-
+	
 	public int getX() {
 		return this.x;
 	}
@@ -39,9 +39,6 @@ public class Player extends com.reality360.resource.Entity{
 		return false;
 	}
 
-	public void tick() {
-		
-	}
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub

@@ -49,10 +49,10 @@ public class GamePanel extends JPanel {
 	}
 
 	public void tick() {
-		repaint();
 		if (level!=null) {
 			level.tick();
 		}
+		repaint();	
 	}
 	public void paintComponent(Graphics g) {
 		BG.setColor(Color.BLACK);
