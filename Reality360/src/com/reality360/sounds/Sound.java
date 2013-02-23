@@ -15,6 +15,8 @@ import com.reality360.Reality360;
 public class Sound {
 	private AudioInputStream stream = null;
 	private Clip clip;
+	private boolean playing = false;
+	private boolean stopped = false;
 
 	public Sound(String path) {
 		try {
@@ -47,11 +49,16 @@ public class Sound {
 		if (line != null) {
 			// Start
 			line.start();
-			int nBytesRead = 0, nBytesWritten = 0;
+			int nBytesRead = 0;
 			while (nBytesRead != -1) {
+				while (!playing) {
+					if (stopped) {
+						return;
+					}
+				}
 				nBytesRead = din.read(data, 0, data.length);
 				if (nBytesRead != -1)
-					nBytesWritten = line.write(data, 0, nBytesRead);
+					line.write(data, 0, nBytesRead);
 			}
 			// Stop
 			line.drain();
@@ -59,6 +66,19 @@ public class Sound {
 			line.close();
 			din.close();
 		}
+	}
+	
+	public void play() {
+		playing = true;
+	}
+	
+	public void pause() {
+		playing = false;
+	}
+	
+	public void stop() {
+		playing = false;
+		stopped = true;
 	}
 
 	private SourceDataLine getLine(AudioFormat audioFormat)
