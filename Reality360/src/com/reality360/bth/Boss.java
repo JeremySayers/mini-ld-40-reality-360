@@ -1,9 +1,11 @@
 package com.reality360.bth;
 
-public class Boss extends Enemy{
+import com.reality360.Reality360;
 
+public class Boss extends Enemy{
+	
 	public Boss(){
-		super(10000);
+		super(Reality360.WIDTH/2-100,Reality360.HEIGHT,2,2,10000);
 		
 	}
 	public void attack1(){//spray and pray
