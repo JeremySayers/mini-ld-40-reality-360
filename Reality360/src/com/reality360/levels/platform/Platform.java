@@ -1,7 +1,9 @@
-package com.reality360;
+package com.reality360.levels.platform;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
+import com.reality360.Level;
 
 public class Platform extends Level {
 	@Override
@@ -22,6 +24,6 @@ public class Platform extends Level {
 	}
 
 	public Platform() {
-
+		
 	}
 }
