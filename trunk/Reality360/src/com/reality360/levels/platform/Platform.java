@@ -9,9 +9,6 @@ public class Platform extends Level {
 	public Platform() {
 		
 	}
-	public void init() {
-
-	}
 	public void paint(Graphics g) {
 		
 	}
