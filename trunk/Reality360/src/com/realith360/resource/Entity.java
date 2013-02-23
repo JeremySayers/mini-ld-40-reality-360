@@ -1,10 +1,12 @@
 package com.realith360.resource;
 import java.awt.image.BufferedImage;
 
-public interface Entity {
-	public BufferedImage paint();
-	public void tick();
-	public boolean live();
-	public int getX();
-	public int getY();
+public abstract class Entity {
+	public abstract void init();
+	public abstract BufferedImage paint();
+	public abstract void tick();
+	public abstract boolean live();
+	public abstract int getX();
+	public abstract int getY();
+	
 }
