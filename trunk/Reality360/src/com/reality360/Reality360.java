@@ -5,9 +5,12 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class Reality360 extends Applet {
@@ -53,5 +56,13 @@ public class Reality360 extends Applet {
                 GAME.requestFocus();
                 DEVICE.setFullScreenWindow(null); // Un-Associate popout with full screen.
         }
+    }
+    
+    public static Image loadImage(String path) {
+    	try {
+    		return new ImageIcon(Reality360.class.getResource(path)).getImage();
+    	} catch (Exception e) {
+    	}
+    	return null;
     }
 }
