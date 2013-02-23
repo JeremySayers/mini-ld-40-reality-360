@@ -8,14 +8,15 @@ import com.reality360.resource.Level;
 
 
 public class Platform extends Level {
+	Player player;
 	public Platform() {
-		Player player = new Player();
+		player = new Player();
 	}
 	public void keyPressed(KeyEvent e) {
-		
+		player.keyPressed(e);
 	}
 	public void keyReleased(KeyEvent e) {
-		
+		player.keyReleased(e);
 	}
 	public void mousePressed(MouseEvent e) {
 		
@@ -24,9 +25,9 @@ public class Platform extends Level {
 		
 	}
 	public void paint(Graphics g) {
-		
+		player.paint(g);
 	}
 	public void tick() {
-		
+		player.tick();
 	}
 }
