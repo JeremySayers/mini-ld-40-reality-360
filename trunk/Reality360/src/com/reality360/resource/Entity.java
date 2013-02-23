@@ -13,4 +13,13 @@ public abstract class Entity {
 	public abstract void mouseReleased(MouseEvent e);
 	public abstract void paint(Graphics g);
 	public abstract void tick();
+	
+	public abstract class AI extends Entity{
+		//useless
+		public void keyPressed(KeyEvent e){}
+		public void keyReleased(KeyEvent e){}
+		public void mousePressed(MouseEvent e){}
+		public void mouseReleased(MouseEvent e){}
+		
+	}
 }
