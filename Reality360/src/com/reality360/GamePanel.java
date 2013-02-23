@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
 		});
 	}
 	public void paintComponent(Graphics g) {
-
+		BG.setColor(Color.BLACK);
 		BG.fillRect(0, 0, BUFFER.getWidth(), BUFFER.getHeight());
 		if (level!=null) {
 			level.paint(BG);
