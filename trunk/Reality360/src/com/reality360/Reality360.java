@@ -15,6 +15,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import com.reality360.sounds.Sound;
+
 public class Reality360 extends Applet {
 	public static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	public static final JFrame FRAME = new JFrame("Reality 360");
@@ -42,6 +44,9 @@ public class Reality360 extends Applet {
 	        }
 		});
 		/* End Of Full Screen Pop Out Class */
+		
+		Sound s = new Sound("/com/reality360/sounds/ChocRain8b.mp3");
+		s.play();
     }
 
     public void setFullscreen(boolean fulls) {

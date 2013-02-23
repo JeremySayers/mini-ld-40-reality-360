@@ -1,34 +1,32 @@
 package com.reality360.levels.platform;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
-import com.realith360.resource.Level;
+import com.reality360.resource.Level;
 
 
 public class Platform extends Level {
-	public void paint(BufferedImage buffer, Graphics g) {
-		
-
-	}
-	public void tick(BufferedImage buffer, Graphics g) {
-		paint(buffer, g);
-
-	}
-	public void init() {
-
-	}
 	public Platform() {
 		
 	}
-	@Override
-	public void paint(Graphics g) {
-		// TODO Auto-generated method stub
+	public void keyPressed(KeyEvent e) {
 		
 	}
-	@Override
+	public void keyReleased(KeyEvent e) {
+		
+	}
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	public void paint(Graphics g) {
+		
+	}
 	public void tick() {
-		// TODO Auto-generated method stub
 		
 	}
 }
