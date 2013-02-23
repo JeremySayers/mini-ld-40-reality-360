@@ -9,33 +9,47 @@ import com.reality360.resource.Level;
 
 public class Driver extends Level{
 
-	public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-	public final static PlayerShip player = new PlayerShip();
+	public static ArrayList<Enemy> enemies;
+	public static ArrayList<Bullet> bullets;
+	public static PlayerShip player;
+	
+	public Driver(){
+			enemies = new ArrayList<Enemy>();
+			bullets = new ArrayList<Bullet>();
+			player = new PlayerShip();
+	}
+	
 	
 	public void paint(Graphics g) {
-		
+		player.paint(g);
+		for(Bullet b:bullets){
+			b.paint(g);
+		}
 	}
 	public void tick() {
-		for(Enemy e:enemies){
-			if(!e.isAlive())enemies.remove(e);
+		for(int i=0; i<enemies.size(); i++){
+			if(!enemies.get(i).isAlive()){
+				enemies.remove(i);
+				i--;
+			}else{ 
+				enemies.get(i).tick();
+			}
 		}
-		for(Bullet b:bullets){
-			if(!b.isAlive())bullets.remove(b);
+		for(int i=0; i<bullets.size(); i++){
+			if(!bullets.get(i).isAlive()){
+				bullets.remove(i);
+				i--;
+			}else{
+				bullets.get(i).tick();
+			}
 		}
-		
+		player.tick();
 	}
 	public void keyPressed(KeyEvent e) {
-		switch(e.getKeyCode()){
-			case KeyEvent.VK_UP: break;
-			case KeyEvent.VK_DOWN: break;
-			case KeyEvent.VK_LEFT: break;
-			case KeyEvent.VK_RIGHT: break;
-			case KeyEvent.VK_SPACE: break;
-		}
+		player.keyPressed(e);
 	}
 	public void keyReleased(KeyEvent e) {
-		
+		player.keyReleased(e);
 	}
 	public void mousePressed(MouseEvent e) {
 		

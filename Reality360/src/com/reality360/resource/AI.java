@@ -3,7 +3,7 @@ package com.reality360.resource;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-public class AI {
+public abstract class AI {
 	
 	protected BufferedImage img = null;
 	protected int width = 0;
@@ -28,14 +28,17 @@ public class AI {
 	public int getY(){
 		return yPos;
 	}
+	public void setX(int x){
+		this.xPos = x;
+	}
+	public void setY(int y){
+		this.yPos = y;
+	}
 	public boolean isAlive(){
 		return isAlive;
 	}
 	public void paint(Graphics g){
 		g.drawImage(img,width,height,xPos,yPos,null);
 	}
-	public void tick(){
-		xPos += moveX;
-		yPos += moveY;
-	}
+	public abstract void tick();
 }
