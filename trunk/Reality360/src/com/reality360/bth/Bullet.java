@@ -19,7 +19,6 @@ public class Bullet extends AI{
 	
 	public Bullet(int xPos, int yPos, int moveX, int moveY){
 		super(xPos, yPos, moveX, moveY);
-		System.out.println("new Bullet");
 		width=10;
 		height=10;
 		
@@ -45,6 +44,10 @@ public class Bullet extends AI{
 	public void paint(Graphics g){
 		g.setColor(Color.RED);
 		g.fillOval(xPos,yPos,width,height);
+		/* img.setX(xPos);
+		 * img.setY(yPos);
+		 * img.drawImage(g);
+		 */
 	}
 	public void tick(){
 		move();
@@ -60,7 +63,6 @@ public class Bullet extends AI{
             setX(getX() + dx2);
             setY(getY() + dy2);
         }
-        System.out.println("Bullet moving");
 	}
 	public boolean collision(){
 		return false;
