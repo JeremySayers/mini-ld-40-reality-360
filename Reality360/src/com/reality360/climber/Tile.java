@@ -3,6 +3,7 @@ package com.reality360.climber;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import com.reality360.Reality360;
 import com.reality360.resource.Entity;
@@ -53,5 +54,10 @@ public class Tile extends Entity {
 		}
 	}
 	public void tick() {
+		
+	}
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
 	}
 }

@@ -3,6 +3,7 @@ package com.reality360.bth;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import com.reality360.Reality360;
 import com.reality360.resource.Entity;
@@ -116,5 +117,10 @@ public class PlayerShip extends Entity{
 			}
 		}
 		if(tickCount>0)tickCount--;
+	}
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
+		
 	}
 }

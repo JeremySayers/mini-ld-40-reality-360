@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.reality360.Reality360;
 import com.reality360.resource.Entity;
@@ -35,11 +36,11 @@ public class Player extends Entity {
 		return getY()!=Reality360.HEIGHT-player.getHeight();
 	}
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode()==39) {
 			xVel = 5;
 			player.changeImage(MOVE_RIGHT);
 		}
-		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+		if (e.getKeyCode()==37) {
 			xVel = -5;
 			player.changeImage(MOVE_LEFT);
 		}
@@ -96,5 +97,26 @@ public class Player extends Entity {
 				}
 			}
 		}
+	}
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
+		if (xAxis>60){
+			xVel = 5;
+			player.changeImage(MOVE_RIGHT);
+        } else if (xAxis<40){
+        	xVel = -5;
+			player.changeImage(MOVE_LEFT);
+        } else if (xVel>0){
+        	xVel = 0;
+        	player.changeImage(IDLE_LEFT);
+        } else if (xVel<0){
+        	xVel = 0;
+        	player.changeImage(IDLE_RIGHT);
+        }
+        if (buttons.get(1) && !jumping){
+        	yVel = 15*40/Climber.speed;
+			jumping = true;
+        }
 	} 
 }

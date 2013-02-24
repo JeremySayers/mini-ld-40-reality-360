@@ -3,6 +3,7 @@ package com.reality360.levels.platform;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import com.reality360.resource.AI;
 import com.reality360.resource.Entity;
@@ -66,6 +67,13 @@ public class Tile extends Entity {
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
 		// TODO Auto-generated method stub
 		
 	}

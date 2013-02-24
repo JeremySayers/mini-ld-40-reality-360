@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.reality360.GamePanel;
 import com.reality360.Reality360;
@@ -110,6 +111,8 @@ public class Climber extends Level {
 		if (distance-maxDistance<0) { 
 			BufferedImage img = Words.menuWord(""+(maxDistance-distance), 20, 20);
 			g.drawImage(img, Reality360.WIDTH/2-img.getWidth()/2, img.getHeight()*2, null);
+			BufferedImage img2 = Words.menuWord(""+Runtime.getRuntime().freeMemory(), 20, 20);
+			g.drawImage(img2, Reality360.WIDTH/2-img2.getWidth()/2, img2.getHeight()*4, null);
 		} else {
 			DOOR.drawImage(g);
 		}
@@ -153,6 +156,16 @@ public class Climber extends Level {
 			}
 		} else {
 			GamePanel.level = new Climber();
+		}
+	}
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
+		if (distance<maxDistance || !player.isCollidingWith(DOOR)) {
+			player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
+			if (!move && (xAxis<40 || xAxis>60 || buttons.get(1))) {
+				move = !end;
+			}
 		}
 	}
 }
