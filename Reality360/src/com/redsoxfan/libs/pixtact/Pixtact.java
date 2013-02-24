@@ -49,6 +49,7 @@ public class Pixtact {
 	}
 	public void changeImage(BufferedImage img) {
 		image=img;
+		absolute.clear();
 		for (int y=0; y<getHeight(); y++)
 			for (int x=0; x<getWidth(); x++)
 				if (getPixelColor(x, y).getAlpha()>0)
@@ -57,6 +58,7 @@ public class Pixtact {
 	}
 	public void resize(int width, int height) {
 		image=createFromImage(image.getScaledInstance(width, height, BufferedImage.SCALE_REPLICATE), width, height).getImage();
+		absolute.clear();
 		for (int y=0; y<getHeight(); y++)
 			for (int x=0; x<getWidth(); x++)
 				if (getPixelColor(x, y).getAlpha()>0)

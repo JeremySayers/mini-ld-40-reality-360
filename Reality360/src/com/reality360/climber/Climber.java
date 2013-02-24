@@ -4,21 +4,26 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import com.reality360.Reality360;
+import com.reality360.menu.Words;
 import com.reality360.resource.Level;
+import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Climber extends Level {
 	private Player player = new Player();
 	private int tick = 0;
 	public static Tile[][] tiles = new Tile[16][20];
 	private static final Image BG = Reality360.loadImage("/redcomputer1.png");
+	private static final Pixtact DOOR = Reality360.loadAsPixtact("/Ethernet.png");
 	public static int speed = 20;
 	public int distance = 0;
 	public int maxDistance = 1000;
 	private boolean end = false;
 	private boolean move = false;
 	public Climber() {
+		DOOR.move(400-DOOR.getWidth()/2, 540-DOOR.getHeight());
 		for (int i=0; i<16; i++) {
 			tiles[i] = new Tile[20];
 		}
@@ -30,7 +35,7 @@ public class Climber extends Level {
 		}
 	}
 	private Tile createTile() {
-		return new Tile(Math.random()>0.75?3*speed/2:0);
+		return new Tile(Math.random()>0.9?speed/2:0);
 	}
 	public void generate(int row) {
 		int li = 0;
@@ -47,9 +52,9 @@ public class Climber extends Level {
 		for (int c=0; c<20; c++) {
 			tiles[row][c] = null;
 		}
-		if (ri!=li) {
-			int len = (int)(Math.random()*2)+2;
-			int sep = (int)(Math.random()*3);
+		if (distance%2==0) {
+			int len = (int)(Math.random()*3)+2;
+			int sep = (int)(Math.random()*2);
 			double ty = Math.random();
 			if (ty<0.3) {
 				int start = Math.min(19-len, Math.max(0, li-sep-len));
@@ -87,16 +92,27 @@ public class Climber extends Level {
 		for (int r=0; r<16; r++) {
 			for (int c=0; c<20; c++) {
 				if (tiles[r][c]!=null) {
-					tiles[r][c].move(40*c, 40*(r-1)+tick*40/speed);
-					tiles[r][c].paint(g);
+					if (tiles[r][c].life<=0) {
+						tiles[r][c] = null;
+					} else {
+						tiles[r][c].move(40*c, 40*(r-1)+tick*40/speed);
+						tiles[r][c].paint(g);
+					}
 				}
 			}
+		}
+		if (distance-maxDistance<0) { 
+			BufferedImage img = Words.menuWord(""+(maxDistance-distance), 20, 20);
+			g.drawImage(img, Reality360.WIDTH/2-img.getWidth()/2, img.getHeight()*2, null);
+		} else {
+			DOOR.drawImage(g);
 		}
 		player.paint(g);
 	}
 	public void tick() {
 		if (player.isAlive()) {
 			player.tick();
+			DOOR.setY((distance-maxDistance-4)*40-DOOR.getHeight()+tick*40/speed);
 			if (move) {
 				tick++;
 				tick%=speed;
@@ -109,13 +125,16 @@ public class Climber extends Level {
 					distance++;
 					if (distance>=maxDistance) {
 						for (int c=0; c<20; c++) {
-							if (Math.abs(distance-maxDistance)%15==0) {
+							if (distance-maxDistance==0) {
 								tiles[0][c] = new Tile(0);
+							} else if (distance-maxDistance>=14) {
+								tiles[0][c] = null;
 							} else {
 								tiles[0][c] = c==0 || c==19 ? new Tile(0) : null;
 							}
 						}
 						if (distance-maxDistance>=15) {
+							tick = 10;
 							move = false;
 							end = true;
 						}

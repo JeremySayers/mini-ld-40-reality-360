@@ -54,9 +54,6 @@ public class Player extends Entity {
 			xVel = 0;
 			player.changeImage(IDLE_LEFT);
 		}
-		if (e.getKeyCode()==KeyEvent.VK_SPACE) {
-			jumping = false;
-		}
 	}
 	public void mousePressed(MouseEvent e) {
 		
@@ -70,6 +67,8 @@ public class Player extends Entity {
 	public void tick() {
 		player.setX(getX()+xVel);
 		player.setY(getY()-yVel);
+		player.setX(Math.min(Reality360.WIDTH-player.getWidth(), Math.max(0, getX())));
+		player.setY(Math.min(Reality360.HEIGHT-player.getHeight(), Math.max(0, getY())));
 		yVel-=40/Climber.speed;
 		for (int r=0; r<16; r++) {
 			for (int c=0; c<20; c++) {
@@ -77,6 +76,7 @@ public class Player extends Entity {
 				if (t!=null) {
 					if (player.isBoundingBoxesColliding(t.getPixtact())) {
 						t.life--;
+						t.startKilling();
 						if (t.life<=0) {
 							Climber.tiles[r][c] = null;
 						} else {
@@ -86,13 +86,12 @@ public class Player extends Entity {
 							if (yVel==0) {
 								player.setY(t.getY()-player.getHeight());
 							}
+							jumping = false;
 							return;
 						}
 					}
 				}
 			}
 		}
-		player.setX(Math.min(Reality360.WIDTH-player.getWidth(), Math.max(0, getX())));
-		player.setY(Math.min(Reality360.HEIGHT-player.getHeight(), Math.max(0, getY())));
 	} 
 }
