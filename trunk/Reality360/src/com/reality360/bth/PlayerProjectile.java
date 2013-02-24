@@ -5,16 +5,27 @@ import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class PlayerProjectile extends AI{
 	
-	public PlayerProjectile(int xPos, int yPos, int speed){
+	private int damage = 0;
+	
+	public PlayerProjectile(int xPos, int yPos, int speed, boolean superBullet){
 		super(xPos,yPos,0,speed);
-		img = Pixtact.read(getClass().getResource("/bullet.png"));
-		width = 5;
-		height = 5;
+		if(!superBullet){
+			img = Pixtact.read(getClass().getResource("/redbullet.png"));
+			damage = 1;
+		}else{
+			img = Pixtact.read(getClass().getResource("/SuperBullet.png"));
+			damage = 3;
+		}
+		width = 8;
+		height = 8;
 		img.resize(width, height);
 		isAlive=true;
 	}
 	public void tick(){
 		img.setY(yPos-=moveY);
 		if(yPos<0)isAlive=false;
+	}
+	public int getDamage(){
+		return damage;
 	}
 }
