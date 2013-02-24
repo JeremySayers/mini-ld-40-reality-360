@@ -104,7 +104,7 @@ public class Pixtact {
 		} catch (Exception e){}
 		return null;
 	}
-	private void calculateAbsoluteNonAlphaPoints() {
+	public void calculateAbsoluteNonAlphaPoints() {
 		absolute.clear();
 		for (Point p:nonAlpha)
 			absolute.add(new Point(p.x+point.x, p.y+point.y));
@@ -171,11 +171,14 @@ public class Pixtact {
 	 * @param others - Other Pixtact Instances
 	 * @return ArrayList of Point instances that holds the collision points
 	 */
-	public ArrayList<Point> getAbsoluteCollisionPoints(Pixtact... others) {
+	public ArrayList<Point> getAbsoluteCollisionPoints(boolean stopAtFirst, Pixtact... others) {
 		ArrayList<Point> absolute = getAbsoluteNonAlphaPoints();
 		for (Pixtact other:others) {
 			absolute.retainAll(other.getAbsoluteNonAlphaPoints());
 			absolute.trimToSize();
+			if (absolute.size()>0 && stopAtFirst) {
+				return absolute;
+			}
 		}
 		return absolute;
 	}
@@ -297,7 +300,18 @@ public class Pixtact {
 	 * @return Whether of not the instances are colliding
 	 */
 	public boolean isColliding(Pixtact... others) {
-		return !getAbsoluteCollisionPoints(others).isEmpty();
+		for (Pixtact other:others) {
+			if (getBounds().intersects(other.getBounds())) {
+				boolean c = isCollidingPixels(other);
+				if (c) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	public boolean isCollidingPixels(Pixtact... others) {
+		return !getAbsoluteCollisionPoints(true, others).isEmpty();
 	}
 	/**
 	 * Tests to see if Point p is colliding with the Pixtact instance (useful for mouse)
@@ -326,7 +340,6 @@ public class Pixtact {
 	public void move(int x, int y) {
 		point.x = x;
 		point.y = y;
-		calculateAbsoluteNonAlphaPoints();
 	}
 	/**
 	 * Move instance to Point p
