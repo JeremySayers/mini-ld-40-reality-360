@@ -23,10 +23,15 @@ public class Platform extends Level {
 	Random r = new Random();
 	boolean jumpKey;
 	static JInputJoystick joystick;
+	boolean hasJoystick = false;
 	Image bg, tile1,tele2,tele3,tele4;
 	public Platform(){
 		tiles= rooms.getCurrentRoom();
-		joystick = new JInputJoystick(Controller.Type.STICK);
+		try{
+			joystick = new JInputJoystick(Controller.Type.STICK);
+		}catch(Exception e){
+			
+		}
 		bg = Reality360.loadImage("/Background1.png",900,700);
 		tile1 = Reality360.loadImage("/TileSquare.png", 40, 40);
 		tele2 = Reality360.loadImage("/TileSquare2.png");
@@ -41,7 +46,9 @@ public class Platform extends Level {
 		player.fall();
 		player.jump();
 		player.updateKeys();
-		checkJoystick();
+		if (hasJoystick){
+			checkJoystick();
+		}
 	}
 
 	@Override
@@ -101,7 +108,8 @@ public class Platform extends Level {
 		
 	}
 	public void checkJoystick(){
-        if(joystick.isControllerConnected()){
+        try{
+		if(joystick.isControllerConnected()){
                 joystick.pollController();
         
         if (joystick.getXAxisPercentage() > 60){
@@ -122,6 +130,10 @@ public class Platform extends Level {
                 player.setJumpKey(false);
         }
         if (joystick.getButtonValue(1)){
-    }
+        
+        }
+        } catch (Exception e){
+        	hasJoystick = false;
+        }
 }
 }
