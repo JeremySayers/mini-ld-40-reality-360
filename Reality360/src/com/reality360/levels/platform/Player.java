@@ -52,21 +52,38 @@ public class Player extends Entity {
 		if (Math.abs(jump)==1) {
 		    speed=jumpSpeed*jump;
 		  } else {
-		    speed=5;
+		    speed = 5;
 		}
 		  getMyCorners(x, y+speed*yVel,Platform.tiles);
 		  if (yVel == -1) {
 		    if (upLeft == 0 && upRight == 0) {
 		      y += speed*yVel;
-		    } else {
+		    } else if(upLeft == 2 && upRight ==2){
+		    	Platform.changeRoom(1);
+		    	x = 20;
+		    	y = 520;
+		    } else if(upLeft == 3 && upRight ==3){
+		    	Platform.changeRoom(2);
+		    	x = 20;
+		    	y = 520;
+		    }else {
 		      y = yTile*40;
 		      jumpSpeed = 0;
 		    }
 		  }
 		  if (yVel == 1) {
 		    if (downLeft == 0 && downRight == 0) {
+		      speed++;
 		      y += speed*yVel;
-		    } else {
+		    } else if (downLeft == 2 && downRight ==2){
+		    	Platform.changeRoom(1);
+		    	x = 20;
+		    	y = 520;
+		    } else if (downLeft == 3 && downRight ==3){
+		    	Platform.changeRoom(2);
+		    	x = 20;
+		    	y = 520;
+		    }else {
 		      y = (yTile+1)*40-height;
 		      isJumping = false;
 		    }
@@ -76,9 +93,17 @@ public class Player extends Entity {
 			  
 		    if (downLeft == 0 && upLeft == 0) {
 		      x += speed*xVel;
-		    } else {
+		    } else if(downLeft == 2 && upLeft ==2){
+		    	Platform.changeRoom(1);
+		    	x = 20;
+		    	y = 520;
+		    }else if(downLeft == 3 && upLeft ==3){
+		    	Platform.changeRoom(2);
+		    	x = 20;
+		    	y = 520;
+		    }else {
 		    	
-		    	System.out.println("DL: "+downLeft);
+		      System.out.println("DL: "+downLeft);
 		      x = xTile*40;
 		    }
 		    fall();
@@ -87,7 +112,15 @@ public class Player extends Entity {
 			 
 		    if (upRight == 0 && downRight == 0) {
 		      x += speed*xVel;
-		    } else {
+		    } else if(upRight == 2 && downRight ==2){
+		    	Platform.changeRoom(1);
+		    	x = 20;
+		    	y = 520;
+		    }else if(upRight == 3 && downRight ==3){
+		    	Platform.changeRoom(2);
+		    	x = 20;
+		    	y = 520;
+		    }else {
 		       x = (xTile+1)*40-width;
 		    }
 		    fall();
@@ -95,21 +128,21 @@ public class Player extends Entity {
 		  xTile = (int)(Math.floor(x/40));
 		  yTile = (int)(Math.floor(y/40));
 	} 
-	public void getMyCorners (int x, int y,Tile tiles[][]) {
+	public void getMyCorners (int x, int y,int tiles[][]) {
 		  downY = (int) Math.floor((y+30-1)/40);
 		  upY = (int) Math.floor((y)/40);
 		  leftX = (int) Math.floor((x)/40);
 		  rightX = (int) Math.floor((x+30-1)/40);
 		  //check if they are walls
-		  upLeft = tiles[upY][leftX].getType();
-		  downLeft = tiles[downY][leftX].getType();
-		  upRight = tiles[upY][rightX].getType();
-		  downRight = tiles[downY][rightX].getType();
+		  upLeft = tiles[upY][leftX];
+		  downLeft = tiles[downY][leftX];
+		  upRight = tiles[upY][rightX];
+		  downRight = tiles[downY][rightX];
 	}
 	public void jump() {
 		  jumpSpeed = jumpSpeed+gravity;
 		  if (jumpSpeed>40-height) {
-		    jumpSpeed = 40-height;
+	    jumpSpeed = 40-height;
 		  }
 		  if (jumpSpeed<0) {
 		    movePlayer(0, -1, -1);  
