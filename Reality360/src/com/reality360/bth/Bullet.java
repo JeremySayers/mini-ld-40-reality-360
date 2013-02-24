@@ -4,9 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.reality360.resource.AI;
+import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Bullet extends AI{
-	
+
 	private int shortest = 0;
 	private int longest = 0;
 	private int numerator = 0;
@@ -21,6 +22,8 @@ public class Bullet extends AI{
 		super(xPos, yPos, moveX, moveY);
 		width=10;
 		height=10;
+
+		img = Pixtact.read(getClass().getResource("/purplebullet.png"));
 		
 		setX(xPos);
 		setY(yPos);
@@ -44,12 +47,9 @@ public class Bullet extends AI{
 	    this.numerator = longest >> 1 ;
 	}
 	public void paint(Graphics g){
-		g.setColor(Color.RED);
-		g.fillOval(xPos,yPos,width,height);
-		/* img.setX(xPos);
-		 * img.setY(yPos);
-		 * img.drawImage(g);
-		 */
+		img.setX(xPos);
+		img.setY(yPos);
+		img.drawImage(g);
 	}
 	public void tick(){
 		move();
@@ -67,6 +67,6 @@ public class Bullet extends AI{
         }
 	}
 	public boolean collision(){
-		return false;
+		return img.isColliding(Driver.player.getImg());
 	}
 }

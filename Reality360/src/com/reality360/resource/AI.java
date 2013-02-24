@@ -38,6 +38,9 @@ public abstract class AI {
 	public boolean isAlive(){
 		return isAlive;
 	}
+	public Pixtact getImg(){
+		return img;
+	}
 	public void paint(Graphics g){
 		if(img!=null){
 			img.setX(xPos);
@@ -46,6 +49,9 @@ public abstract class AI {
 		}else{
 			g.fillRect(xPos, yPos, width, height);
 		}
+	}
+	public boolean isHit(Pixtact p){
+		return img.isColliding(p);
 	}
 	public abstract void tick();
 }
