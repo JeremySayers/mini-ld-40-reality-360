@@ -1,11 +1,12 @@
 package com.reality360.resource;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+
+import com.redsoxfan.libs.pixtact.Pixtact;
 
 public abstract class AI {
 	
-	protected BufferedImage img = null;
+	protected Pixtact img = null;
 	protected int width = 0;
 	protected int height = 0;
 	protected int xPos = 0;
@@ -38,7 +39,13 @@ public abstract class AI {
 		return isAlive;
 	}
 	public void paint(Graphics g){
-		g.drawImage(img,width,height,xPos,yPos,null);
+		if(img!=null){
+			img.setX(xPos);
+			img.setY(yPos);
+			img.drawImage(g);
+		}else{
+			g.fillRect(xPos, yPos, width, height);
+		}
 	}
 	public abstract void tick();
 }
