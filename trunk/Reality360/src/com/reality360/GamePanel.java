@@ -19,7 +19,7 @@ import com.redsoxfan.libs.pixtact.Pixtact;
 public class GamePanel extends JPanel {
 	public static final BufferedImage BUFFER = new BufferedImage(Reality360.WIDTH, Reality360.HEIGHT, BufferedImage.TYPE_INT_RGB);
 	public static final Graphics BG = BUFFER.getGraphics();
-	public static Level level;
+	public static Level level = null;
 	public GamePanel() {
 		new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask(){
             public void run() {
@@ -68,7 +68,7 @@ public class GamePanel extends JPanel {
 
 	public void tick() {
 		if (level!=null) {
-			level.tick();
+			level.tick();	
 		}
 		repaint();	
 	}
