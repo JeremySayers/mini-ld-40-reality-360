@@ -5,7 +5,8 @@ import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Enemy extends AI{
 	
-	private int hitPoints = 0, locationAngle = 0;
+	private int hitPoints = 0;
+	private double locationAngle = 0.00;
 	
 	public Enemy(int xPos, int yPos, int moveX, int moveY, int hitPoints){
 		super(xPos, yPos, moveX, moveY);
@@ -26,10 +27,10 @@ public class Enemy extends AI{
 			}
 			tickCount=30;
 		}
-		setX(Math.cos(arg0));
-		setY(Math.sin(arg0));
-		locationAngle++;
-		if(locationAngle==360)locationAngle=0;
+		setX(xPos+(int)(((Math.cos(locationAngle))/2.0)*20));
+		setY(yPos+(int)(((Math.sin(locationAngle))/2.0)*5));
+		locationAngle+=.05;
+		if(locationAngle>360)locationAngle=0;
 		if(tickCount>0)tickCount--;
 	}
 }
