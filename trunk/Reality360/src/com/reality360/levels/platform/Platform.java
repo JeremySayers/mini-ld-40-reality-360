@@ -10,32 +10,18 @@ import com.reality360.resource.Level;
 
 
 public class Platform extends Level {
-	Player player = new Player(385,200);
+	Player player = new Player(50,520);
+	static Room rooms = new Room(0);
+	static int[][] tiles;
 	Random r = new Random();
-	public static Tile[][] tiles = new Tile[15][20];
 	boolean jumpKey;
 	public Platform(){
-		//Generate bottom tiles
-		for (int i = 0; i < 15; i++){
-			for (int j = 0; j < 20; j++){
-				if(i == 14){
-					tiles[i][j] = new Tile(i*40,j*40,1);
-				} else if(i == 0){
-					tiles[i][j] = new Tile(i*40,j*40,1);
-				}else if(j == 19){
-					tiles[i][j] = new Tile(i*40,j*40,1);
-				} else if(j == 0){
-					tiles[i][j] = new Tile(i*40,j*40,1);
-				} else {
-					tiles[i][j] = new Tile(i*40,j*40,0);
-				}
-			}
-		}
-		for (int i = 0; i < 30; i++){
-			tiles[r.nextInt(14)+1][r.nextInt(19)+1].setType(1);
-		}
+		 tiles= rooms.getCurrentRoom();
 	}
-	
+	public static void changeRoom(int roomNum){
+		rooms = new Room(roomNum);
+		tiles = rooms.getCurrentRoom();
+	}
 	public void tick(){
 		player.fall();
 		player.jump();
@@ -83,12 +69,27 @@ public class Platform extends Level {
 	public void paint(Graphics g) {
 		for (int i = 0; i < 15; i++){
 			for (int j = 0; j < 20; j++){
-				if (tiles[i][j].getType() == 1){
+				if (tiles[i][j]== 1){
 					g.setColor(Color.YELLOW);
 					g.fillRect(j*40, i*40,40,40);
 					g.setColor(Color.BLACK);
 					g.drawRect(j*40, i*40,40,40);
-				} 
+				} else if(tiles[i][j] == 2){
+					g.setColor(Color.BLUE);
+					g.fillRect(j*40, i*40,40,40);
+					g.setColor(Color.BLACK);
+					g.drawRect(j*40, i*40,40,40);
+				} else if(tiles[i][j] == 3){
+					g.setColor(Color.ORANGE);
+					g.fillRect(j*40, i*40,40,40);
+					g.setColor(Color.BLACK);
+					g.drawRect(j*40, i*40,40,40);
+				} else if(tiles[i][j] == 4){
+					g.setColor(Color.MAGENTA);
+					g.fillRect(j*40, i*40,40,40);
+					g.setColor(Color.BLACK);
+					g.drawRect(j*40, i*40,40,40);
+				}
 			}
 		}
 		player.paint(g);
