@@ -10,8 +10,10 @@ public class Climber extends Level {
 	private Player player = new Player();
 	private int tick = 0;
 	public static Tile[][] tiles = new Tile[16][20];
-	public static int offset = 0;
 	public static int speed = 20;
+	public int distance = 0;
+	public int maxDistance = 1000;
+	private boolean move = false;
 	public Climber() {
 		for (int i=0; i<16; i++) {
 			tiles[i] = new Tile[20];
@@ -67,6 +69,7 @@ public class Climber extends Level {
 		player.keyPressed(e);
 	}
 	public void keyReleased(KeyEvent e) {
+		move = move || distance==0;
 		player.keyReleased(e);
 	}
 	public void mousePressed(MouseEvent e) {
@@ -89,15 +92,31 @@ public class Climber extends Level {
 	public void tick() {
 		if (player.isAlive()) {
 			player.tick();
-			tick++;
-			tick%=speed;
-			if (tick==0) {
-				for (int r=15; r>0; r--) {
-					for (int c=0; c<20; c++) {
-						tiles[r][c] = tiles[r-1][c];
+			if (move) {
+				tick++;
+				tick%=speed;
+				if (tick==0) {
+					for (int r=15; r>0; r--) {
+						for (int c=0; c<20; c++) {
+							tiles[r][c] = tiles[r-1][c];
+						}
+					}
+					distance++;
+					if (distance>=maxDistance) {
+						for (int c=0; c<20; c++) {
+							if (Math.abs(distance-maxDistance)%15==0) {
+								tiles[0][c] = new Tile(0);
+							} else {
+								tiles[0][c] = c==0 || c==19 ? new Tile(0) : null;
+							}
+						}
+						if (distance-maxDistance>=15) {
+							move = false;
+						}
+					} else {
+						generate(0);
 					}
 				}
-				generate(0);
 			}
 		}
 	}
