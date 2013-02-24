@@ -79,9 +79,27 @@ public class Reality360 extends Applet {
     	return null;
     }
     
+    public static Pixtact loadAsPixtact(String path, int width, int height) {
+    	try {
+    		Pixtact p = Pixtact.createFromImage(loadImage(path));
+    		p.resize(width, height);
+    		return p;
+    	} catch (Exception e) {
+    	}
+    	return null;
+    }
+    
     public static Image loadImage(String path) {
     	try {
     		return new ImageIcon(loadResource(path)).getImage();
+    	} catch (Exception e) {
+    	}
+    	return null;
+    }
+    
+    public static Image loadImage(String path, int width, int height) {
+    	try {
+    		return loadAsPixtact(path, width, height).getImage();
     	} catch (Exception e) {
     	}
     	return null;

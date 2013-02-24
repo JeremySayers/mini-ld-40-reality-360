@@ -16,8 +16,8 @@ import javax.imageio.ImageIO;
 /**
  * Pixtact (PIXel conTACT) - Pixel-level collision detection library using an Image. 
  * @author RedSoxFan
- * @since 21 Dec 12
- * @version 1.0
+ * @since 23 Feb 13
+ * @version 2.0 (Mini Ludum Dare #40 Edition)
  */
 public class Pixtact {
 	// Versioning Info
@@ -29,12 +29,26 @@ public class Pixtact {
 	private ArrayList<Point> nonAlpha = new ArrayList<Point>();
 	private ArrayList<Point> absolute = new ArrayList<Point>();
 	private Point point = new Point(0, 0);
+	private static boolean DEBUG = false;
+	private static Color DEBUG_COLOR = Color.RED;
 	/**
 	 * A Pixel-level collision detection library.
 	 * @param img - Image (with an alpha channel) to use for collision detection
 	 */
 	public Pixtact(BufferedImage img) {
 		image=img;
+		for (int y=0; y<getHeight(); y++)
+			for (int x=0; x<getWidth(); x++)
+				if (getPixelColor(x, y).getAlpha()>0)
+					nonAlpha.add(new Point(x, y));
+		absolute.addAll(nonAlpha);
+	}
+	public Pixtact(BufferedImage img, int width, int height) {
+		image = img;
+		resize(width, height);
+	}
+	public void resize(int width, int height) {
+		image=createFromImage(image.getScaledInstance(width, height, BufferedImage.SCALE_REPLICATE), width, height).getImage();
 		for (int y=0; y<getHeight(); y++)
 			for (int x=0; x<getWidth(); x++)
 				if (getPixelColor(x, y).getAlpha()>0)
@@ -49,6 +63,11 @@ public class Pixtact {
 	 */
 	public static Pixtact createFromImage(Image read) {
 		BufferedImage buff = new BufferedImage(read.getWidth(null), read.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		buff.getGraphics().drawImage(read, 0, 0, null);
+		return new Pixtact(buff);
+	}
+	public static Pixtact createFromImage(Image read, int width, int height) {
+		BufferedImage buff = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		buff.getGraphics().drawImage(read, 0, 0, null);
 		return new Pixtact(buff);
 	}
@@ -107,6 +126,9 @@ public class Pixtact {
 	 */
 	public void drawImage(Graphics g) {
 		drawImage(g, getX(), getY(), getWidth(), getHeight());
+		if (DEBUG) {
+			drawBoundingBox(g, DEBUG_COLOR);
+		}
 	}
 	/**
 	 * Draw the Image on Graphics g at Coordinate (x, y) using the instance's Width and Height
@@ -184,6 +206,16 @@ public class Pixtact {
 	 */
 	public BufferedImage getImage() {
 		return image;
+	}
+	public static boolean isDrawingBounds() {
+		return DEBUG;
+	}
+	public static void turnOnDrawBounding(Color c) {
+		DEBUG = true;
+		DEBUG_COLOR = c;
+	}
+	public static void turnOffDrawBounding() {
+		DEBUG = false;
 	}
 	/**
 	 * Absolute location of this instance

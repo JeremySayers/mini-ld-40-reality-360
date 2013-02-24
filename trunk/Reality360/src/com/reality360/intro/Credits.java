@@ -73,7 +73,7 @@ public class Credits extends Level {
 							"\n" +
 							"Story: Spencer Rak, Jeremy Sayers, James Berman and Brian Ashworth\n" +
 							"\n" +
-							"Graphics and Audio: James Berman\n" +
+							"Graphics and Audio: James Berman and Nathaniel Butterworth\n" +
 							"\n" +
 							"Game Play: Spencer Rak, Jeremy Sayers, and Brian Ashworth\n" +
 							"\n" +

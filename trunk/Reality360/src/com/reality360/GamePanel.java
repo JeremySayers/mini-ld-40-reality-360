@@ -10,10 +10,11 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import com.reality360.intro.Credits;
+import com.reality360.climber.Climber;
 import com.reality360.intro.Intro;
 import com.reality360.levels.platform.Platform;
 import com.reality360.resource.Level;
+import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class GamePanel extends JPanel {
 	public static final BufferedImage BUFFER = new BufferedImage(Reality360.WIDTH, Reality360.HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -32,6 +33,12 @@ public class GamePanel extends JPanel {
 				}
 			}
 			public void keyReleased(KeyEvent arg0) {
+				if (arg0.getKeyCode()==KeyEvent.VK_F1 && arg0.isControlDown()) {
+					if (Pixtact.isDrawingBounds())
+						Pixtact.turnOffDrawBounding();
+					else
+						Pixtact.turnOnDrawBounding(Color.RED);
+				}
 				if (level!=null) {
 					level.keyReleased(arg0);
 				} else if (arg0.getKeyCode()==KeyEvent.VK_P) {
@@ -40,6 +47,8 @@ public class GamePanel extends JPanel {
 					level = new com.reality360.bth.Driver();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_I) {
 					level = new Intro();
+				} else if (arg0.getKeyCode()==KeyEvent.VK_C) {
+					level = new Climber();
 				}
 			}
 		});
