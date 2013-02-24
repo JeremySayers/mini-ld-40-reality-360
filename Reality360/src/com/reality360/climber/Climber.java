@@ -1,26 +1,30 @@
 package com.reality360.climber;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import com.reality360.Reality360;
 import com.reality360.resource.Level;
 
 public class Climber extends Level {
 	private Player player = new Player();
 	private int tick = 0;
 	public static Tile[][] tiles = new Tile[16][20];
+	private static final Image BG = Reality360.loadImage("/redcomputer1.png");
 	public static int speed = 20;
 	public int distance = 0;
 	public int maxDistance = 1000;
+	private boolean end = false;
 	private boolean move = false;
 	public Climber() {
 		for (int i=0; i<16; i++) {
 			tiles[i] = new Tile[20];
 		}
-		tiles[14][11] = createTile();
-		tiles[14][10] = createTile();
-		tiles[14][9] = createTile();
+		for (int c=0; c<20; c++) {
+			tiles[14][c] = new Tile(0);
+		}
 		for (int r=12; r>=0; r-=2) {
 			generate(r);
 		}
@@ -69,7 +73,7 @@ public class Climber extends Level {
 		player.keyPressed(e);
 	}
 	public void keyReleased(KeyEvent e) {
-		move = move || distance==0;
+		move = !end;
 		player.keyReleased(e);
 	}
 	public void mousePressed(MouseEvent e) {
@@ -79,6 +83,7 @@ public class Climber extends Level {
 		player.mouseReleased(e);
 	}
 	public void paint(Graphics g) {
+		g.drawImage(BG, 0, 0, null);
 		for (int r=0; r<16; r++) {
 			for (int c=0; c<20; c++) {
 				if (tiles[r][c]!=null) {
@@ -112,6 +117,7 @@ public class Climber extends Level {
 						}
 						if (distance-maxDistance>=15) {
 							move = false;
+							end = true;
 						}
 					} else {
 						generate(0);
