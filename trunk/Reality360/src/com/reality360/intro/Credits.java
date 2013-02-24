@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.reality360.GamePanel;
 import com.reality360.Reality360;
@@ -124,5 +125,10 @@ public class Credits extends Level {
 	}
 	public void tick() {
 		tick++;
+	}
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
+		
 	}
 }

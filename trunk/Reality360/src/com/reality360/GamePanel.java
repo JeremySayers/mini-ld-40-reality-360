@@ -7,10 +7,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import com.reality360.climber.Climber;
 import com.reality360.intro.Intro;
 import com.reality360.levels.platform.Platform;
 import com.reality360.resource.Level;
@@ -22,11 +22,6 @@ public class GamePanel extends JPanel {
 	public static Level level = null;
 	public static Intro INTRO = null;
 	public GamePanel() {
-		new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask(){
-            public void run() {
-            	tick();
-            }
-		}, 1, 1000/60);
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent arg0) {
 				if (level!=null) {
@@ -69,7 +64,11 @@ public class GamePanel extends JPanel {
 			}
 		});
 	}
-
+	public void joystickValue(boolean stick, ArrayList<Boolean> buttons, float xAxis, float xRot, float yAxis, float yRot, float zAxis, float zRot) {
+		if (level!=null) {
+			level.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
+		}
+	}
 	public void tick() {
 		if (level!=null) {
 			level.tick();	

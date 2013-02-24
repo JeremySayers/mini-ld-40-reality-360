@@ -53,6 +53,12 @@ public class Reality360 extends Applet {
 		s.play();
 		
 		GAME.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "Blank"));
+		
+		new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask(){
+            public void run() {
+            	GAME.tick();
+            }
+		}, 1, 1000/60);
     }
 
     public void setFullscreen(boolean fulls) {

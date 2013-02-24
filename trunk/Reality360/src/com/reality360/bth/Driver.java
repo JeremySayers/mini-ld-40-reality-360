@@ -93,4 +93,9 @@ public class Driver extends Level{
 	public void mouseReleased(MouseEvent e) {
 		
 	}
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
+		
+	}
 }

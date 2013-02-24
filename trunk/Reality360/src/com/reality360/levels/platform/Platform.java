@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.java.games.input.Controller;
@@ -21,17 +22,9 @@ public class Platform extends Level {
 	static Room rooms = new Room(3);
 	static int[][] tiles;
 	Random r = new Random();
-	boolean jumpKey;
-	static JInputJoystick joystick;
-	boolean hasJoystick = false;
 	Image bg, tile1,tele2,tele3,tele4;
 	public Platform(){
 		tiles= rooms.getCurrentRoom();
-		try{
-			joystick = new JInputJoystick(Controller.Type.STICK);
-		}catch(Exception e){
-			
-		}
 		bg = Reality360.loadImage("/Background1.png",900,700);
 		tile1 = Reality360.loadImage("/TileSquare.png", 40, 40);
 		tele2 = Reality360.loadImage("/TileSquare2.png");
@@ -46,9 +39,6 @@ public class Platform extends Level {
 		player.fall();
 		player.jump();
 		player.updateKeys();
-		if (hasJoystick){
-			checkJoystick();
-		}
 	}
 
 	@Override
@@ -105,35 +95,24 @@ public class Platform extends Level {
 			}
 		}
 		player.paint(g);
-		
 	}
-	public void checkJoystick(){
-        try{
-		if(joystick.isControllerConnected()){
-                joystick.pollController();
-        
-        if (joystick.getXAxisPercentage() > 60){
+	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
+			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
+			float zRot) {
+		if (xAxis>60){
         	player.movePlayer(1,0,0);
         	player.setMovingRightIdle(true);
 			player.setMovingLeftIdle(false);
-        } else if (joystick.getXAxisPercentage() < 40){
+        } else if (xAxis<40){
         	player.movePlayer(-1,0,0);
         	player.setMovingRightIdle(false);
 			player.setMovingLeftIdle(true);
         }
-        	
-        }
         
-        if (joystick.getButtonValue(1)){
+        if (buttons.get(1)){
                 player.setJumpKey(true);
         } else {
                 player.setJumpKey(false);
         }
-        if (joystick.getButtonValue(1)){
-        
-        }
-        } catch (Exception e){
-        	hasJoystick = false;
-        }
-}
+	}
 }
