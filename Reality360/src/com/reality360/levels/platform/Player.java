@@ -2,9 +2,11 @@ package com.reality360.levels.platform;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import com.reality360.Reality360;
 import com.reality360.resource.Entity;
 
 
@@ -19,8 +21,12 @@ public class Player extends Entity {
 	private int height;
 	private boolean movingLeft;
 	private boolean movingRight;
+	private boolean movingLeftIdle;
+	private boolean movingRightIdle;
 	
 	private boolean jumpKey;
+	
+	Image charLeftIdle, charRightIdle, charLeftMoving, charRightMoving, charJumping;
 	
 	private int downY, upY, leftX, rightX, upLeft, downLeft, upRight, downRight, xTile, yTile;
 	
@@ -46,6 +52,11 @@ public class Player extends Entity {
 		setWidth(30);
 		setHeight(30);
 		setSpeed(5);
+		charLeftIdle = Reality360.loadImage("/spensker_idlel.png", 30, 30);
+		charRightIdle = Reality360.loadImage("/spensker_idler.png", 30, 30);
+		charLeftMoving = Reality360.loadImage("/spensker_leftanim.png", 30, 30);
+		charRightMoving = Reality360.loadImage("/spensker_rightanim.png", 30, 30);
+		charJumping = Reality360.loadImage("/spensker_jumping.png", 30, 30);
 	}
 
 	public void movePlayer(int xVel, int yVel, int jump) {
@@ -58,15 +69,9 @@ public class Player extends Entity {
 		  if (yVel == -1) {
 		    if (upLeft == 0 && upRight == 0) {
 		      y += speed*yVel;
-		    } else if(upLeft == 2 && upRight ==2){
-		    	Platform.changeRoom(1);
-		    	x = 20;
-		    	y = 520;
-		    } else if(upLeft == 3 && upRight ==3){
-		    	Platform.changeRoom(2);
-		    	x = 20;
-		    	y = 520;
-		    }else {
+		    } else if (checkTeleportCondition(upLeft, upRight) != 9999){
+		    	teleport(checkTeleportCondition(upLeft, upRight));
+		  	}else {
 		      y = yTile*40;
 		      jumpSpeed = 0;
 		    }
@@ -75,15 +80,9 @@ public class Player extends Entity {
 		    if (downLeft == 0 && downRight == 0) {
 		      speed++;
 		      y += speed*yVel;
-		    } else if (downLeft == 2 && downRight ==2){
-		    	Platform.changeRoom(1);
-		    	x = 20;
-		    	y = 520;
-		    } else if (downLeft == 3 && downRight ==3){
-		    	Platform.changeRoom(2);
-		    	x = 20;
-		    	y = 520;
-		    }else {
+		    } else if (checkTeleportCondition(downLeft, downRight) != 9999){
+		    	teleport(checkTeleportCondition(downLeft, downRight));
+		  	}else {
 		      y = (yTile+1)*40-height;
 		      isJumping = false;
 		    }
@@ -93,15 +92,9 @@ public class Player extends Entity {
 			  
 		    if (downLeft == 0 && upLeft == 0) {
 		      x += speed*xVel;
-		    } else if(downLeft == 2 && upLeft ==2){
-		    	Platform.changeRoom(1);
-		    	x = 20;
-		    	y = 520;
-		    }else if(downLeft == 3 && upLeft ==3){
-		    	Platform.changeRoom(2);
-		    	x = 20;
-		    	y = 520;
-		    }else {
+		    } else if (checkTeleportCondition(downLeft,upLeft) != 9999){
+		    	teleport(checkTeleportCondition(downLeft, upLeft));
+		  	}else {
 		    	
 		      System.out.println("DL: "+downLeft);
 		      x = xTile*40;
@@ -112,15 +105,9 @@ public class Player extends Entity {
 			 
 		    if (upRight == 0 && downRight == 0) {
 		      x += speed*xVel;
-		    } else if(upRight == 2 && downRight ==2){
-		    	Platform.changeRoom(1);
-		    	x = 20;
-		    	y = 520;
-		    }else if(upRight == 3 && downRight ==3){
-		    	Platform.changeRoom(2);
-		    	x = 20;
-		    	y = 520;
-		    }else {
+		    } else if (checkTeleportCondition(upRight, downRight) != 9999){
+		    	teleport(checkTeleportCondition(upRight, downRight));
+		  	}else {
 		       x = (xTile+1)*40-width;
 		    }
 		    fall();
@@ -128,6 +115,22 @@ public class Player extends Entity {
 		  xTile = (int)(Math.floor(x/40));
 		  yTile = (int)(Math.floor(y/40));
 	} 
+	public int checkTeleportCondition(int tile1, int tile2){
+		if(tile1 == 2 && tile2 == 2){
+			return 1;
+		} else if(tile1 == 3 && tile2 == 3){
+			return 2;
+		} else if(tile1 == 4 && tile2 == 4){
+			return 3;
+		} else {
+			return 9999;
+		}
+	}
+	public void teleport(int roomNum){
+		Platform.changeRoom(roomNum);
+		x = 60;
+		y = 520;
+	}
 	public void getMyCorners (int x, int y,int tiles[][]) {
 		  downY = (int) Math.floor((y+30-1)/40);
 		  upY = (int) Math.floor((y)/40);
@@ -160,10 +163,16 @@ public class Player extends Entity {
 		  }
 	}
 	public void updateKeys(){
-		if (movingLeft)
+		if (movingLeft){
 			movePlayer(-1,0,0);
-		if (movingRight)
+			setMovingLeftIdle(true);
+			setMovingRightIdle(false);
+		}
+		if (movingRight){
 			movePlayer(1,0,0);
+			setMovingRightIdle(true);
+			setMovingLeftIdle(false);
+		}
 		if (jumpKey){
 			if (!isJumping){
 			setJumping(true);
@@ -174,9 +183,17 @@ public class Player extends Entity {
 			
 	}
 	public void paint(Graphics g) {		
-		//Draw the player
-		g.setColor(Color.GREEN);
-		g.fillRect(this.getX(),this.getY(),30,30);
+		if (movingLeft){
+			g.drawImage(charLeftMoving, x, y,null);
+		} else if (movingRight){
+			g.drawImage(charRightMoving, x, y,null);
+		}  else if (isJumping){
+			g.drawImage(charJumping, x, y,null);
+		} else if (isMovingLeftIdle()){
+			g.drawImage(charLeftIdle, x, y,null);
+		} else if (isMovingRightIdle()){
+			g.drawImage(charRightIdle, x, y,null);
+		}  
 	}	
 	public int getX() {
 		return x;
@@ -316,5 +333,21 @@ public class Player extends Entity {
 	public void tick() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public boolean isMovingLeftIdle() {
+		return movingLeftIdle;
+	}
+
+	public void setMovingLeftIdle(boolean movingLeftIdle) {
+		this.movingLeftIdle = movingLeftIdle;
+	}
+
+	public boolean isMovingRightIdle() {
+		return movingRightIdle;
+	}
+
+	public void setMovingRightIdle(boolean movingRightIdle) {
+		this.movingRightIdle = movingRightIdle;
 	}
 }
