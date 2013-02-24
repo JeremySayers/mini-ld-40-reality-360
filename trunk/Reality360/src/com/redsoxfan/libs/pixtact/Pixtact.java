@@ -47,6 +47,14 @@ public class Pixtact {
 		image = img;
 		resize(width, height);
 	}
+	public void changeImage(BufferedImage img) {
+		image=img;
+		for (int y=0; y<getHeight(); y++)
+			for (int x=0; x<getWidth(); x++)
+				if (getPixelColor(x, y).getAlpha()>0)
+					nonAlpha.add(new Point(x, y));
+		absolute.addAll(nonAlpha);
+	}
 	public void resize(int width, int height) {
 		image=createFromImage(image.getScaledInstance(width, height, BufferedImage.SCALE_REPLICATE), width, height).getImage();
 		for (int y=0; y<getHeight(); y++)
@@ -309,6 +317,9 @@ public class Pixtact {
 			}
 		}
 		return false;
+	}
+	public boolean isBoundingBoxesColliding(Pixtact other) {
+		return getBounds().intersects(other.getBounds());
 	}
 	public boolean isCollidingPixels(Pixtact... others) {
 		return !getAbsoluteCollisionPoints(true, others).isEmpty();
