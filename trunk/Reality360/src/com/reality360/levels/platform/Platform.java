@@ -109,7 +109,6 @@ public class Platform extends Level {
         	player.setMovingRightIdle(true);
 			player.setMovingLeftIdle(false);
         } else if (joystick.getXAxisPercentage() < 40){
-        	System.out.println("LOL");
         	player.movePlayer(-1,0,0);
         	player.setMovingRightIdle(false);
 			player.setMovingLeftIdle(true);
