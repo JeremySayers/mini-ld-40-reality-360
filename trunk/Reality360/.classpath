@@ -5,5 +5,11 @@
 	<classpathentry kind="lib" path="src/libs/jl1.0.1.jar"/>
 	<classpathentry kind="lib" path="src/libs/mp3spi1.9.5.jar"/>
 	<classpathentry kind="lib" path="src/libs/tritonus_share.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Jeremy/Downloads/jinput_nightly_20130224/dist/jinput.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Jeremy/Downloads/jinput_nightly_20130224/dist"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Jeremy/Downloads/jinput_nightly_20130224/dist/jinput-test.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
