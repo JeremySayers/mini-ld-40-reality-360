@@ -18,7 +18,7 @@ import com.reality360.resource.Level;
 
 public class Platform extends Level {
 	Player player = new Player(50,520);
-	static Room rooms = new Room(0);
+	static Room rooms = new Room(3);
 	static int[][] tiles;
 	Random r = new Random();
 	boolean jumpKey;

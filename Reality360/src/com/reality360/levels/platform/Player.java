@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 
 import com.reality360.Reality360;
 import com.reality360.resource.Entity;
+import com.reality360.resource.RotateImage;
 
 
 public class Player extends Entity {
@@ -22,7 +23,7 @@ public class Player extends Entity {
 	private boolean movingLeft;
 	private boolean movingRight;
 	private boolean movingLeftIdle;
-	private boolean movingRightIdle;
+	private boolean movingRightIdle = true;
 	
 	private boolean jumpKey;
 	
@@ -182,14 +183,20 @@ public class Player extends Entity {
 		}
 			
 	}
-	public void paint(Graphics g) {		
-		if (movingLeft){
+	public void paint(Graphics g) {	
+		 if (isJumping){
+				if (isMovingRight()){
+					RotateImage.rotate(g, x, y, charJumping,45);
+				} else if(isMovingLeft()){
+					RotateImage.rotate(g, x, y, charJumping,-45);
+				} else {
+					g.drawImage(charJumping,x,y,null);
+				}
+		} else if (movingLeft){
 			g.drawImage(charLeftMoving, x, y,null);
 		} else if (movingRight){
 			g.drawImage(charRightMoving, x, y,null);
-		}  else if (isJumping){
-			g.drawImage(charJumping, x, y,null);
-		} else if (isMovingLeftIdle()){
+		}  else if (isMovingLeftIdle()){
 			g.drawImage(charLeftIdle, x, y,null);
 		} else if (isMovingRightIdle()){
 			g.drawImage(charRightIdle, x, y,null);
