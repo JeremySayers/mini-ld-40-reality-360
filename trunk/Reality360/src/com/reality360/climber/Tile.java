@@ -11,12 +11,14 @@ import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Tile extends Entity {
 	private Pixtact tile = new Pixtact(createColorTile(Color.GREEN));
-	public Tile() {
+	public int life;
+	public Tile(int life) {
+		this.life = life==0?Integer.MAX_VALUE:life;
 	}
 	public static BufferedImage createColorTile(Color c) {
-		BufferedImage b = new BufferedImage(40, 40, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage b = new BufferedImage(40, 10, BufferedImage.TYPE_INT_ARGB);
 		b.getGraphics().setColor(c);
-		b.getGraphics().fillRect(0, 0, 40, 40);
+		b.getGraphics().fillRect(0, 0, 40, 10);
 		return b;
 	}
 	public Pixtact getPixtact() {
@@ -44,6 +46,7 @@ public class Tile extends Entity {
 	}
 	public void paint(Graphics g) {
 		tile.drawImage(g);
+		tile.drawBoundingBox(g, life<60?Color.BLUE:Color.BLACK);
 	}
 	public void tick() {
 	}

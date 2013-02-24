@@ -13,7 +13,7 @@ public class Player extends Entity {
 	private static boolean alive = true;
 	private static int xVel = 0;
 	private static int yVel = 0;
-	private boolean onPlatform = false;
+	private boolean jumping;
 	public Player() {
 		player.setLocation(Reality360.WIDTH/2-player.getWidth()/2, Reality360.HEIGHT/4*3);
 	}
@@ -24,10 +24,7 @@ public class Player extends Entity {
 		return player.getY();
 	}
 	public boolean isAlive() {
-		return alive;
-	}
-	public void move(int x, int y) {
-		player.move(x, y);
+		return getY()!=Reality360.HEIGHT-player.getHeight();
 	}
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
@@ -36,16 +33,20 @@ public class Player extends Entity {
 		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
 			xVel = -5;
 		}
-		if (e.getKeyCode()==KeyEvent.VK_SPACE && yVel==0) {
-			yVel = 20;
+		if (e.getKeyCode()==KeyEvent.VK_SPACE && !jumping) {
+			yVel = 15*40/Climber.speed;
+			jumping = true;
 		}
 	}
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode()==KeyEvent.VK_RIGHT) {
+		if (e.getKeyCode()==KeyEvent.VK_RIGHT && xVel==5) {
 			xVel = 0;
 		}
-		if (e.getKeyCode()==KeyEvent.VK_LEFT) {
+		if (e.getKeyCode()==KeyEvent.VK_LEFT && xVel==-5) {
 			xVel = 0;
+		}
+		if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+			jumping = false;
 		}
 	}
 	public void mousePressed(MouseEvent e) {
@@ -59,28 +60,27 @@ public class Player extends Entity {
 	}
 	public void tick() {
 		player.setX(getX()+xVel);
-		player.setX(Math.min(Reality360.WIDTH-player.getWidth(), Math.max(0, getX())));
-		if (!onPlatform  || yVel!=0) {
-			player.setY(getY()-(yVel--));
-			player.setY(Math.min(Reality360.HEIGHT-player.getHeight(), Math.max(0, getY())));
-			if (getY()==Reality360.HEIGHT-player.getHeight())
-				yVel = 0;
-		}
-		if (yVel!=0 || xVel!=0) {
-			onPlatform = false;
-			for (int r=0; r<16; r++) {
-				for (int c=0; c<20; c++) {
-					Tile t = Climber.tiles[r][c];
-					if (t!=null) {
-						if (player.isColliding(t.getPixtact())) {
-							player.setY((r-1)*40-player.getHeight());
-							yVel = 0;
-							onPlatform = true;
+		player.setY(getY()-yVel);
+		yVel-=40/Climber.speed;
+		for (int r=0; r<16; r++) {
+			for (int c=0; c<20; c++) {
+				Tile t = Climber.tiles[r][c];
+				if (t!=null) {
+					if (player.isColliding(t.getPixtact())) {
+						t.life--;
+						if (t.life<=0) {
+							Climber.tiles[r][c] = null;
+						} else {
+							if (player.getY()+player.getHeight()>=t.getY() && yVel<0) {
+								yVel = 0;
+							}
 							return;
 						}
 					}
 				}
 			}
 		}
+		player.setX(Math.min(Reality360.WIDTH-player.getWidth(), Math.max(0, getX())));
+		player.setY(Math.min(Reality360.HEIGHT-player.getHeight(), Math.max(0, getY())));
 	} 
 }
