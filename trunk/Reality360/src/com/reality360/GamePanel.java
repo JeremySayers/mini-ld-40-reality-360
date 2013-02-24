@@ -38,6 +38,8 @@ public class GamePanel extends JPanel {
 						Pixtact.turnOffDrawBounding();
 					else
 						Pixtact.turnOnDrawBounding(Color.RED);
+				} else if (arg0.isControlDown() && arg0.getKeyCode()==KeyEvent.VK_M) {
+					level = null;
 				}
 				if (level!=null) {
 					level.keyReleased(arg0);

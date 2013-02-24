@@ -11,7 +11,9 @@ import com.redsoxfan.libs.pixtact.Pixtact;
 public class Tile extends Entity {
 	private Pixtact tile;
 	public int life;
+	private boolean killable = false;
 	public Tile(int life) {
+		killable  = life!=0;
 		this.life = life==0?Integer.MAX_VALUE:life;
 		tile = Reality360.loadAsPixtact(life==0?"/Tile.jpg":"/PoofTile.jpg", 40, 10);
 	}
@@ -40,6 +42,15 @@ public class Tile extends Entity {
 	}
 	public void paint(Graphics g) {
 		tile.drawImage(g);
+	}
+	public void startKilling() {
+		if (killable) {
+			new java.util.Timer().schedule(new java.util.TimerTask() {
+				public void run() {
+					life = 0;
+				}
+			}, 500);
+		}
 	}
 	public void tick() {
 	}
