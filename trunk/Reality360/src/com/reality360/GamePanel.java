@@ -20,6 +20,7 @@ public class GamePanel extends JPanel {
 	public static final BufferedImage BUFFER = new BufferedImage(Reality360.WIDTH, Reality360.HEIGHT, BufferedImage.TYPE_INT_RGB);
 	public static final Graphics BG = BUFFER.getGraphics();
 	public static Level level = null;
+	public static Intro INTRO = null;
 	public GamePanel() {
 		new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask(){
             public void run() {
@@ -48,9 +49,10 @@ public class GamePanel extends JPanel {
 				} else if (arg0.getKeyCode()==KeyEvent.VK_B) {
 					level = new com.reality360.bth.Driver();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_I) {
-					level = new Intro();
-				} else if (arg0.getKeyCode()==KeyEvent.VK_C) {
-					level = new Climber();
+					if (INTRO==null) {
+						INTRO = new Intro();
+					}
+					level = INTRO;
 				}
 			}
 		});

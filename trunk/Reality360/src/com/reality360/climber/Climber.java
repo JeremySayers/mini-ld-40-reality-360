@@ -6,7 +6,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import com.reality360.GamePanel;
 import com.reality360.Reality360;
+import com.reality360.levels.platform.Platform;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
 import com.redsoxfan.libs.pixtact.Pixtact;
@@ -75,11 +77,15 @@ public class Climber extends Level {
 		}
 	}
 	public void keyPressed(KeyEvent e) {
-		player.keyPressed(e);
+		if (distance<maxDistance || !player.isCollidingWith(DOOR)) {
+			player.keyPressed(e);
+		}
 	}
 	public void keyReleased(KeyEvent e) {
 		move = !end;
-		player.keyReleased(e);
+		if (distance<maxDistance || !player.isCollidingWith(DOOR)) {
+			player.keyReleased(e);
+		}
 	}
 	public void mousePressed(MouseEvent e) {
 		player.mousePressed(e);
@@ -110,7 +116,9 @@ public class Climber extends Level {
 		player.paint(g);
 	}
 	public void tick() {
-		if (player.isAlive()) {
+		if (distance>=maxDistance && player.isCollidingWith(DOOR)) {
+			GamePanel.level = new Platform();
+		} else if (player.isAlive()) {
 			player.tick();
 			DOOR.setY((distance-maxDistance-4)*40-DOOR.getHeight()+tick*40/speed);
 			if (move) {
@@ -143,6 +151,8 @@ public class Climber extends Level {
 					}
 				}
 			}
+		} else {
+			GamePanel.level = new Climber();
 		}
 	}
 }
