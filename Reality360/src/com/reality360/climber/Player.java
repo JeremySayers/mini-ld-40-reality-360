@@ -16,17 +16,20 @@ public class Player extends Entity {
 	private static final BufferedImage MOVE_LEFT = Reality360.loadAsPixtact("/spensker_leftanim.png", 13, 25).getImage();
 	private static final BufferedImage MOVE_RIGHT = Reality360.loadAsPixtact("/spensker_rightanim.png", 13, 25).getImage();
 	private static final Pixtact player = Reality360.loadAsPixtact("/spensker_idlel.png", 13, 25);
-	private static int xVel = 0;
-	private static int yVel = 0;
+	private int xVel = 0;
+	private int yVel = 0;
 	private boolean jumping;
 	public Player() {
-		player.setLocation(Reality360.WIDTH/2-player.getWidth()/2, Reality360.HEIGHT/4*3);
+		player.setLocation(Reality360.WIDTH/2-player.getWidth()/2, 440);
 	}
 	public int getX() {
 		return player.getX();
 	}
 	public int getY() {
 		return player.getY();
+	}
+	public boolean isCollidingWith(Pixtact other) {
+		return player.isBoundingBoxesColliding(other);
 	}
 	public boolean isAlive() {
 		return getY()!=Reality360.HEIGHT-player.getHeight();

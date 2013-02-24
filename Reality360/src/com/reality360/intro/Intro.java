@@ -11,14 +11,14 @@ import java.awt.image.BufferedImage;
 
 import com.reality360.GamePanel;
 import com.reality360.Reality360;
-import com.reality360.levels.platform.Platform;
+import com.reality360.climber.Climber;
 import com.reality360.menu.Menu;
 import com.reality360.menu.Menu.MenuFunction;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
 
 public class Intro extends Level {
-	public int ticks;
+	public int ticks = 0;
 	public int closedTicks = 0;
 	public boolean credits = false;
 	private static final Image menubg = Reality360.loadImage("/title.jpg");
@@ -28,7 +28,7 @@ public class Intro extends Level {
 		ticks = 0;
 		menu.addSelection(new MenuFunction() {
 			public void run() {
-				GamePanel.level = new Platform();
+				GamePanel.level = new Climber();
 			}
 			public String name() {
 				return "Start";
