@@ -7,39 +7,25 @@ import com.reality360.resource.AI;
 
 public class Bullet extends AI{
 	
-	private int shortest = 0;
-	private int longest = 0;
-	private int numerator = 0;
-	private int dx1 = 0;
-	private int dy1 = 0;
-	private int dx2 = 0;
-	private int dy2 = 0;
-	private int x2 = 0;
-	private int y2 = 0;
+	private int modMove = 0, dX = 0, dY = 0;
+	private boolean xLarger=false;
 	
-	public Bullet(int xPos, int yPos, int moveX, int moveY){
-		super(xPos, yPos, moveX, moveY);
-		width=10;
-		height=10;
+	public Bullet(int x1, int y1, int x2, int y2){
+		super(x1,y1,x2,y2);
+		width=5;
+		height=5;
 		
-		setX(xPos);
-		setY(yPos);
-		x2 = moveX;
-		y2 = moveY;
-		int w = x2 - xPos;
-	    int h = y2 - yPos;
-	    if(w<0) dx1 = -1; else if(w>0) dx1 = 1;
-	    if(h<0) dy1 = -1; else if(h>0) dy1 = 1;
-	    if(w<0) dx2 = -1; else if(w>0) dx2 = 1;
-	    int longest = Math.abs(w);
-	    int shortest = Math.abs(h);
-	    if(!(longest>shortest)) {
-	        longest = Math.abs(h);
-	        shortest = Math.abs(w);
-	        if(h<0)dy2 = -1; else if(h>0) dy2 = 1;
-	        dx2 = 0;            
-	    }
-	    numerator = longest >> 1;
+		dX=x2-x1;
+		dY=y2-y1;
+		if(Math.abs(dY)>Math.abs(dX)){
+			modMove = dY%dX;
+			xLarger=false;
+		}else if(Math.abs(dY)<Math.abs(dX)){
+			modMove = dX%dY;
+			xLarger=true;
+		}
+	    
+		isAlive = true;
 	}
 	public void paint(Graphics g){
 		g.setColor(Color.RED);
@@ -50,19 +36,21 @@ public class Bullet extends AI{
 		 */
 	}
 	public void tick(){
+		tickCount++;
 		move();
 		if(xPos>800||xPos<0||yPos>600||yPos<0)isAlive=false;
+		if(tickCount==60)tickCount=0;
 	}
 	public void move(){
-	    this.numerator += this.shortest;
-        if(!(numerator<longest)) {
-            numerator -= longest;
-            setX(getX() + dx1);
-            setY(getY() + dy1);
-        } else {
-            setX(getX() + dx2);
-            setY(getY() + dy2);
-        }
+		if(xLarger){
+			System.out.println("xLarger");
+			if(tickCount%modMove==0){xPos++;System.out.println("X is larger, incrementing on every "+modMove);}
+			yPos++;
+		}else{
+			System.out.println("yLarger");
+			if(tickCount%modMove==0){yPos++;System.out.println("Y is larger, incrementing on every "+modMove);}
+			xPos++;
+		}
 	}
 	public boolean collision(){
 		return false;
