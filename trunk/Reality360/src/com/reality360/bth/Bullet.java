@@ -17,6 +17,7 @@ public class Bullet extends AI{
 	private int dy2 = 0;
 	private int x2 = 0;
 	private int y2 = 0;
+	private int tickCounter = 0;
 	
 	public Bullet(int xPos, int yPos, int moveX, int moveY){
 		super(xPos, yPos, moveX, moveY);
@@ -52,6 +53,11 @@ public class Bullet extends AI{
 		img.drawImage(g);
 	}
 	public void tick(){
+		if (tickCounter == 30) {
+			tickCounter = 0;
+		} else {
+			tickCounter++;
+		}
 		move();
 		if(xPos>800||xPos<0||yPos>600||yPos<0)isAlive=false;
 	}
