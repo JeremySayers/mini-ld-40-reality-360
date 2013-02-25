@@ -44,8 +44,12 @@ public class GamePanel extends JPanel {
 					level = new Platform();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_B) {
 					level = new com.reality360.bth.Driver();
+				} else if (arg0.getKeyCode()==KeyEvent.VK_R) {
+					level = new com.reality360.levels.defendthebase.Driver();
+
 				} else if (arg0.getKeyCode()==KeyEvent.VK_C) {
 					level = new Climber();
+
 				} else if (arg0.getKeyCode()==KeyEvent.VK_I) {
 					if (INTRO==null) {
 						INTRO = new Intro();
@@ -65,6 +69,13 @@ public class GamePanel extends JPanel {
 			public void mouseReleased(MouseEvent arg0) {
 				if (level!=null) {
 					level.mouseReleased(arg0);
+				}
+			}
+		});
+		addMouseMotionListener(new MouseAdapter() {
+			public void mouseMoved(MouseEvent e) {
+				if (level!=null){
+					level.mouseMoved(e);
 				}
 			}
 		});

@@ -22,7 +22,7 @@ public class Platform extends Level {
 	static Room rooms = new Room(3);
 	static int[][] tiles;
 	Random r = new Random();
-	Image bg, tile1,tele2,tele3,tele4;
+	Image bg, tile1,tele2,tele3,tele4,tele5;
 	public Platform(){
 		tiles= rooms.getCurrentRoom();
 		bg = Reality360.loadImage("/Background1.png",900,700);
@@ -30,6 +30,7 @@ public class Platform extends Level {
 		tele2 = Reality360.loadImage("/TileSquare2.png");
 		tele3 = Reality360.loadImage("/TileSquare3.png");
 		tele4 = Reality360.loadImage("/TileSquare4.png");
+		tele5 = Reality360.loadImage("/cc_hologear4.png",40,40);
 	}	
 	public static void changeRoom(int roomNum){
 		rooms = new Room(roomNum);
@@ -91,6 +92,8 @@ public class Platform extends Level {
 					g.drawImage(tele3,j*40,i*40,null);
 				} else if(tiles[i][j] == 4){
 					g.drawImage(tele4,j*40,i*40,null);
+				} else if(tiles[i][j] == 5){
+					g.drawImage(tele5,j*40,i*40,null);
 				}
 			}
 		}
@@ -114,5 +117,10 @@ public class Platform extends Level {
         } else {
                 player.setJumpKey(false);
         }
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

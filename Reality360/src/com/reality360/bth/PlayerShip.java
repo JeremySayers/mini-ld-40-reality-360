@@ -152,4 +152,9 @@ public class PlayerShip extends Entity{
         	powerLevel = 90;
         }
 	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
