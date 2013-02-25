@@ -26,12 +26,15 @@ import javax.swing.JFrame;
 import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Reality360 extends Applet {
-	public static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-	public static final JFrame FRAME = new JFrame("Reality 360");
-	public static final GamePanel GAME = new GamePanel();
+	public static GraphicsDevice DEVICE;
+	public static JFrame FRAME;
+	public static GamePanel GAME;
     public static final int HEIGHT = 600;
     public static final int WIDTH = 800;
-    public void init() {      
+    public void init() {
+    	DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+    	FRAME = new JFrame("Reality 360");
+    	GAME = new GamePanel();
     	showOutput(false);
 		// Initialize Applet
 		setSize(WIDTH, HEIGHT);

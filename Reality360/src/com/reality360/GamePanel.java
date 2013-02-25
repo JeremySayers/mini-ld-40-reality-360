@@ -41,23 +41,21 @@ public class GamePanel extends JPanel {
 				}
 				if (level!=null) {
 					level.keyReleased(arg0);
+				}
+				if (!arg0.isControlDown()) {
+					
 				} else if (arg0.getKeyCode()==KeyEvent.VK_P) {
 					level = new Platform();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_B) {
 					level = new com.reality360.bth.Driver();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_R) {
 					level = new com.reality360.levels.defendthebase.Driver();
-
 				} else if (arg0.getKeyCode()==KeyEvent.VK_C) {
 					level = new Climber();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_E) {
 					level = new Ending();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_I) {
-					if (INTRO==null) {
-						INTRO = new Intro();
-					} else {
-						INTRO.ticks = INTRO.closedTicks;
-					}
+					INTRO.ticks = INTRO.closedTicks;
 					level = INTRO;
 				}
 			}
@@ -86,6 +84,8 @@ public class GamePanel extends JPanel {
 				}
 			}
 		});
+		INTRO = new Intro();
+		level = INTRO;
 	}
 	public void joystickValue(boolean stick, ArrayList<Boolean> buttons, float xAxis, float xRot, float yAxis, float yRot, float zAxis, float zRot) {
 		if (level!=null) {
