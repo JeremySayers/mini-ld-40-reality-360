@@ -29,6 +29,7 @@ public class DesktopReality360 {
 	}
 	private JInputJoystick joystick;
 	public DesktopReality360() {
+		Reality360.showOutput(false);
 		FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		FRAME.setLayout(new BorderLayout());
 		FRAME.add(GAME, BorderLayout.CENTER);

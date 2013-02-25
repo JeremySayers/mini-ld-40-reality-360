@@ -11,6 +11,11 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
@@ -26,7 +31,8 @@ public class Reality360 extends Applet {
 	public static final GamePanel GAME = new GamePanel();
     public static final int HEIGHT = 600;
     public static final int WIDTH = 800;
-    public void init() {            
+    public void init() {      
+    	showOutput(false);
 		// Initialize Applet
 		setSize(WIDTH, HEIGHT);
 		setLayout(new BorderLayout());
@@ -121,5 +127,18 @@ public class Reality360 extends Applet {
     	} catch (Exception e) {
     	}
     	return null;
+    }
+    public static void showOutput(boolean on) {
+    	try {
+	    	if (on) {
+	    		System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out)));
+	    	} else {
+				System.setOut(new PrintStream(new OutputStream() {
+					public void write(int arg0) throws IOException {
+					}
+				}));
+	    	}
+    	} catch (Exception e) {
+    	}
     }
 }

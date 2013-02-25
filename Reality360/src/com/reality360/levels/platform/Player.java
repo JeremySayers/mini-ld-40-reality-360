@@ -69,7 +69,7 @@ public class Player extends Entity {
 		}
 		  getMyCorners(x, y+speed*yVel,Platform.tiles);
 		  if (yVel == -1) {
-		    if (upLeft == 0 && upRight == 0) {
+		    if (upLeft <= 0 && upRight <= 0) {
 		      y += speed*yVel;
 		    } else if (checkTeleportCondition(upLeft, upRight) != 9999){
 		    	teleport(checkTeleportCondition(upLeft, upRight));
@@ -125,18 +125,41 @@ public class Player extends Entity {
 		} else if(tile1 == 4 && tile2 == 4){
 			return 3;
 		} else if(tile1 == 5 && tile2 == 5){
+			return 444;
+		} else if(tile1 == 6 && tile2==6){
+			return 4;
+		} else if (tile1 == 7 && tile2==7){
 			return 666;
-		}else {
+		} else if (tile1 == 8 && tile2==8){
+			return 0;
+		} else if (tile1 == 9 && tile1==9) {
+			return 444;
+		} else {
 			return 9999;
 		}
 	}
 	public void teleport(int roomNum){
 		if  (roomNum == 666){
-			GamePanel.level = new com.reality360.levels.defendthebase.Driver();
+			Platform.secretTick = 180;
+			Platform.secrets[3] = true;
+		} else if (roomNum == 444) {
+			if (Platform.currentRoom==0) {
+				Platform.secretTick = 180;
+				Platform.secrets[2] = true;
+			} else {
+				Platform.end = true;
+			}
 		} else {
 			Platform.changeRoom(roomNum);
 			x = 60;
 			y = 520;
+			if (roomNum==0 && !Platform.secrets[0]) {
+				Platform.secrets[0] = true;
+				Platform.secretTick = 180;
+			} else if (roomNum==4 && !Platform.secrets[1]) {
+				Platform.secrets[1] = true;
+				Platform.secretTick = 180;
+			}
 		}
 	}
 	public void getMyCorners (int x, int y,int tiles[][]) {
