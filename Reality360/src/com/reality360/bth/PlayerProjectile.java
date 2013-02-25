@@ -25,6 +25,9 @@ public class PlayerProjectile extends AI{
 		img.setY(yPos-=moveY);
 		if(yPos<0)isAlive=false;
 	}
+	public void kill(){
+		isAlive = false;
+	}
 	public int getDamage(){
 		return damage;
 	}

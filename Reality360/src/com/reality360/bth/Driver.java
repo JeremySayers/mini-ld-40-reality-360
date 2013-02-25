@@ -5,8 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import com.reality360.Reality360;
 import com.reality360.resource.Level;
+import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Driver extends Level{
 
@@ -14,18 +14,38 @@ public class Driver extends Level{
 	public static ArrayList<Bullet> bullets;
 	public static ArrayList<PlayerProjectile> projectiles;
 	public static PlayerShip player;
+	private int scrolldistance1 = 0, scrolldistance2 = -700;
+	private Pixtact background1, background2;
 	
 	public Driver(){
-			enemies = new ArrayList<Enemy>();
-			bullets = new ArrayList<Bullet>();
-			projectiles = new ArrayList<PlayerProjectile>();
-			player = new PlayerShip();
-			enemies.add(new Enemy(200,0,0,0,100));
-			enemies.add(new Enemy(650,0,0,0,100));
-			enemies.add(new Enemy(350,0,0,0,100));
-			enemies.add(new Enemy(500,0,0,0,100));
+		background1 = Pixtact.read(getClass().getResource("/bthBackground.png"));
+		background2 = Pixtact.read(getClass().getResource("/bthBackground2.png"));
+		background1.resize(900,700);
+		background2.resize(900,700);
+		enemies = new ArrayList<Enemy>();
+		bullets = new ArrayList<Bullet>();
+		projectiles = new ArrayList<PlayerProjectile>();
+		player = new PlayerShip();
+		enemies.add(new Enemy(650,100,100,200,100));
+		enemies.add(new Enemy(700,300,200,200,100));
+		enemies.add(new Enemy(200,200,300,200,100));
+		enemies.add(new Enemy(0,400,400,200,100));
 	}
 	public void paint(Graphics g) {
+		
+		background1.setX(0-player.getX()*100/800);
+		background1.setY(0-player.getY()*100/800+scrolldistance1);
+		background2.setX(0-player.getX()*100/800);
+		background2.setY(0-player.getY()*100/800+scrolldistance2);
+		
+		if(scrolldistance1>=700){
+			scrolldistance1=-700;
+		}else if(scrolldistance2>=700){
+			scrolldistance2=-700;
+		}
+		
+		background1.drawImage(g);
+		background2.drawImage(g);
 		player.paint(g);
 		synchronized(enemies){
 			for(Enemy e:enemies){
@@ -54,6 +74,7 @@ public class Driver extends Level{
 					for(PlayerProjectile p:projectiles){
 						if(enemies.get(i).isHit(p.getImg())){
 							enemies.get(i).doDamage(p.getDamage());
+							p.kill();
 						}
 					}
 				}
@@ -79,6 +100,8 @@ public class Driver extends Level{
 				}
 			}
 		}
+		scrolldistance1++;
+		scrolldistance2++;
 		player.tick();
 	}
 	public void keyPressed(KeyEvent e) {
