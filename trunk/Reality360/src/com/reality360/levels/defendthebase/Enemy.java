@@ -1,6 +1,6 @@
 package com.reality360.levels.defendthebase;
 
-public class Bullet {
+public class Enemy {
 
 	private int shortest;
 	private int longest;
@@ -15,10 +15,8 @@ public class Bullet {
 	private int x2;
 	private int y2;
 	private String name;
-	private int howLongFirstMove;
 
-	public Bullet(int x, int y, int x2, int y2,int howLongFirstMove){
-		this.howLongFirstMove = howLongFirstMove; 
+	public Enemy(int x, int y, int x2, int y2,int howLongFirstMove){
 		this.setX(x);
 		this.setY(y);
 		this.x2 = x2;
@@ -45,15 +43,9 @@ public class Bullet {
 	    this.dx2 = dx2;
 	    this.dy2 = dy2;
 	    this.moving = true;
-	    this.name = name;
 		move(40);
 	}
-	
-	public Bullet(int x, int y, String name){
-		this.x = x;
-		this.y = y;
-		this.setName(name);
-	}
+
 	public void move(int num){
 		for (int i =0; i < num; i++){
 		    this.numerator += this.shortest ;
