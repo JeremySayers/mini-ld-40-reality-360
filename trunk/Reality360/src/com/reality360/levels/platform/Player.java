@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import com.reality360.GamePanel;
 import com.reality360.Reality360;
 import com.reality360.resource.Entity;
 import com.reality360.resource.RotateImage;
@@ -124,14 +125,20 @@ public class Player extends Entity {
 			return 2;
 		} else if(tile1 == 4 && tile2 == 4){
 			return 3;
-		} else {
+		} else if(tile1 == 5 && tile2 == 5){
+			return 666;
+		}else {
 			return 9999;
 		}
 	}
 	public void teleport(int roomNum){
-		Platform.changeRoom(roomNum);
-		x = 60;
-		y = 520;
+		if  (roomNum == 666){
+			GamePanel.level = new com.reality360.levels.defendthebase.Driver();
+		} else {
+			Platform.changeRoom(roomNum);
+			x = 60;
+			y = 520;
+		}
 	}
 	public void getMyCorners (int x, int y,int tiles[][]) {
 		  downY = (int) Math.floor((y+30-1)/40);
@@ -362,6 +369,12 @@ public class Player extends Entity {
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 }

@@ -71,10 +71,12 @@ public class Driver extends Level{
 					i--;
 				}else{ 
 					enemies.get(i).tick();
-					for(PlayerProjectile p:projectiles){
-						if(enemies.get(i).isHit(p.getImg())){
-							enemies.get(i).doDamage(p.getDamage());
-							p.kill();
+					synchronized(projectiles){
+						for(PlayerProjectile p:projectiles){
+							if(enemies.get(i).isHit(p.getImg())){
+								enemies.get(i).doDamage(p.getDamage());
+								p.kill();
+							}
 						}
 					}
 				}
@@ -120,5 +122,10 @@ public class Driver extends Level{
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
 		player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
