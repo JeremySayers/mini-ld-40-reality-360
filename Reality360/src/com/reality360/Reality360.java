@@ -6,11 +6,8 @@ import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
@@ -18,7 +15,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import com.reality360.sounds.Sound;
 import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Reality360 extends Applet {

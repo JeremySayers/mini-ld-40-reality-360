@@ -1,6 +1,5 @@
 package com.reality360.levels.platform;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -8,12 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.java.games.input.Controller;
-import net.java.games.input.ControllerEnvironment;
-import net.java.games.input.Version;
-
 import com.reality360.Reality360;
-import com.reality360.resource.JInputJoystick;
 import com.reality360.resource.Level;
 
 
@@ -120,6 +114,11 @@ public class Platform extends Level {
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

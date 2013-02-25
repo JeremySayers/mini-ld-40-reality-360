@@ -12,10 +12,10 @@ import com.reality360.GamePanel;
 import com.reality360.Reality360;
 import com.reality360.resource.Level;
 
-public class Credits extends Level {
+public class Instructions extends Level {
 	private int tick;
 	private Intro intro;
-	public Credits(Intro i) {
+	public Instructions(Intro i) {
 		tick = 0;
 		intro = i;
 	}
@@ -54,27 +54,24 @@ public class Credits extends Level {
 			x += paintLine(g, msg, x, y, t, d);
 			t -= 180;
 			if (t>0) {
-				msg = "cat CREDITS";
+				msg = "cat README";
 				x += paintLine(g, msg, x, y, t, d);
 				t -= d*msg.length();
 			}
 			if (t>0) {
 				if (t>0) {
-					msg = "\u00A92013 Satan\n" +
-							"22 Acacia Avenue\n" +
-							"Hell Corportation\n" +
-							"\n" +
-							"Producer: Team Tibbles\n" +
-							"\n" +
-							"Story: Spencer Rak, Jeremy Sayers, James Berman and Brian Ashworth\n" +
-							"\n" +
-							"Graphics and Audio: James Berman and Nathaniel Butterworth\n" +
-							"\n" +
-							"Game Play: Spencer Rak, Jeremy Sayers, and Brian Ashworth\n" +
-							"\n" +
-							"We would also like to thank Hitler, Satan, and Big Foot for their ideas!\n" +
-							"\n" +
-							"This is Team Tibbles entry for Mini Ludum Dare #40 (Real World)";
+					msg = "Objective:\n" +
+						  "    Get back to reality by completing various levels\n" +
+						  "\n" +
+						  "Keyboard Controls:\n" +
+						  "    F - Toggle Fullscreen\n" +
+						  "    Level specific controls will be shown at the beginning of that level\n" +
+						  "\n" +
+						  "Joystick Controls (Desktop Version Only):\n" +
+						  "    Button 9 - Windowed Mode\n" +
+						  "    Button 10 - Fullscreen Mode\n" +
+						  "    Level specific controls will be shown at the beginning of that level" +
+						  " \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b";
 					d = 5;
 					for (String m:msg.split("\n")) {
 						x = 5;

@@ -60,4 +60,9 @@ public class Tile extends Entity {
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
 	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }

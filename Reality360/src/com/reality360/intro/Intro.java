@@ -26,12 +26,13 @@ public class Intro extends Level {
 	public boolean level1 = false;
 	private float y = 50;
 	private boolean sensitive = false;
+	protected boolean instructions;
 	private static final Image menubg = Reality360.loadImage("/title.jpg");
 	private static final Menu menu = new Menu(" ");
 	private static int start = 0;
 	public static final Sound snd = new Sound("/com/reality360/sounds/ChocRain8b.mp3", true);
 	public Intro() {
-		ticks = 1800;
+		ticks = 0;
 		menu.addSelection(new MenuFunction() {
 			public void run() {
 				sensitive = false;
@@ -45,6 +46,16 @@ public class Intro extends Level {
 		menu.addSelection(new MenuFunction() {
 			public void run() {
 				sensitive = false;
+				instructions = true;
+				start = ticks;
+			}
+			public String name() {
+				return "Instructions";
+			}
+		});
+		menu.addSelection(new MenuFunction() {
+			public void run() {
+				sensitive = false;
 				credits = true;
 				start = ticks;
 			}
@@ -52,15 +63,6 @@ public class Intro extends Level {
 				return "Credits";
 			}
 		});
-		menu.addSelection(new MenuFunction() {
-			public void run() {
-				
-			}
-			public String name() {
-				return "Settings";
-			}
-		});
-		snd.play();
 	}
 	public void keyPressed(KeyEvent e) {
 		
@@ -101,7 +103,7 @@ public class Intro extends Level {
 		if (t>0) {
 			y += fm.getHeight();
 			x = 5;
-			msg = "Executing world...";
+			msg = "Executing world... \b \b \b \b \b \bPID 666";
 			d = 2;
 			x += paintLine(g, msg, x, y, t, d);
 			t -= d*msg.length();
@@ -211,6 +213,20 @@ public class Intro extends Level {
 					level1 = false;
 				}
 				t -= 100;
+			} else if (t>0 && instructions) {
+				g.setColor(Color.BLACK);
+				int h = (int)(Reality360.HEIGHT/2*((ticks-start)/100.0));
+				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, Reality360.WIDTH, h-5);
+				g.fillRect(0, Reality360.HEIGHT-h+5, Reality360.WIDTH, h);
+				g.setColor(Color.GREEN);
+				g.fillRect(0, h-5, Reality360.WIDTH, 5);
+				g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
+				if (h>=Reality360.HEIGHT/2) {
+					GamePanel.level = new Instructions(this);
+					instructions = false;
+				}
+				t -= 100;
 			}
 		} else if (ticks%d>d/2) {
 			g.drawString("\u258D", x, y);
@@ -242,5 +258,15 @@ public class Intro extends Level {
 			}
 			y  = yAxis;
 		}
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
