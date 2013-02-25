@@ -97,7 +97,7 @@ public class Climber extends Level {
 	public void keyPressed(KeyEvent e) {
 		if (instructions) {
 			
-		} else if (distance<maxDistance || (end && !player.isCollidingWith(DOOR))) {
+		} else if ((distance<maxDistance || player.getY()+player.getHeight()>(distance-maxDistance)*40) || (end && !player.isCollidingWith(DOOR))) {
 			player.keyPressed(e);
 		} else {
 			player.stop();
@@ -110,7 +110,7 @@ public class Climber extends Level {
 				instructions = false;
 				playable = true;
 			}
-		} else if (distance<maxDistance || (end && !player.isCollidingWith(DOOR))) {
+		} else if ((distance<maxDistance || player.getY()+player.getHeight()>(distance-maxDistance)*40) || (end && !player.isCollidingWith(DOOR))) {
 			player.keyReleased(e);
 		} else {
 			player.stop();

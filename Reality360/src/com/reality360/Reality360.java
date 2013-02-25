@@ -6,8 +6,11 @@ import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
@@ -45,7 +48,7 @@ public class Reality360 extends Applet {
 		});
 		/* End Of Full Screen Pop Out Class */
 		
-		//GAME.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "Blank"));
+		GAME.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "Blank"));
 		
 		new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask(){
             public void run() {
