@@ -7,23 +7,25 @@ import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Enemy extends AI{
 	
-	private int hitPoints = 0, rise = 0, run = 0, deathCount=0;
-	private double locationAngle = 0.00;
-	private boolean inPosition = false, isDying = false;//have enemy travel to posision from spwan point
-	private Image[] deathSeq = new Image[4];
-	private int shortest = 0;
-	private int longest = 0;
-	private int numerator = 0;
-	private int dx1 = 0;
-	private int dy1 = 0;
-	private int dx2 = 0;
-	private int dy2 = 0;
-	private int x2 = 0;
-	private int y2 = 0;
+	protected int hitPoints = 0,deathCount=0;
+	protected double locationAngle = 0.00;
+	protected boolean inPosition = false, isDying = false;
+	protected Image[] deathSeq = new Image[4];
+	protected int shortest = 0;
+	protected int longest = 0;
+	protected int numerator = 0;
+	protected int dx1 = 0;
+	protected int dy1 = 0;
+	protected int dx2 = 0;
+	protected int dy2 = 0;
+	protected int x2 = 0;
+	protected int y2 = 0;
+	protected int damage = 0;
 	
 	public Enemy(int xPos, int yPos, int moveX, int moveY, int hitPoints){
 		super(xPos, yPos, moveX, moveY);
 		this.hitPoints = hitPoints;
+		damage = hitPoints/10;
 		height = 30;
 		width = 30;
 		img = Pixtact.read(getClass().getResource("/Minion.png"));
@@ -69,7 +71,7 @@ public class Enemy extends AI{
 		}else{
 			if(tickCount==0 && (Math.abs(Driver.player.getX()-xPos)<=200) && Driver.player.getY()>yPos+15){
 				synchronized(Driver.bullets){
-					Driver.bullets.add(new Bullet(xPos+width/2,yPos+height,Driver.player.getX()+15,Driver.player.getY()-15));//finish bullet vectors
+					Driver.bullets.add(new Bullet(xPos+width/2,yPos+height,Driver.player.getX()+15,Driver.player.getY()-15,damage));//finish bullet vectors
 				}
 				tickCount=30;
 			}

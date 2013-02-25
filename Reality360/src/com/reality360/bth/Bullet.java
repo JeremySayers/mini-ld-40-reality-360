@@ -17,9 +17,11 @@ public class Bullet extends AI{
 	private int x2 = 0;
 	private int y2 = 0;
 	private int tickCounter = 0;
+	private int dmg = 0;
 	
-	public Bullet(int xPos, int yPos, int moveX, int moveY){
+	public Bullet(int xPos, int yPos, int moveX, int moveY, int damage){
 		super(xPos, yPos, moveX, moveY);
+		dmg = damage;
 		width=10;
 		height=10;
 
@@ -46,6 +48,9 @@ public class Bullet extends AI{
 	    this.longest = longest;
 	    this.numerator = longest >> 1 ;
 	}
+	public int getDamage(){
+		return dmg;
+	}
 	public void paint(Graphics g){
 		img.setX(xPos);
 		img.setY(yPos);
@@ -70,6 +75,9 @@ public class Bullet extends AI{
             setX(getX() + dx2);
             setY(getY() + dy2);
         }
+	}
+	public int damage(){
+		return dmg;
 	}
 	public boolean collision(){
 		return img.isColliding(Driver.player.getImg());
