@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import com.reality360.resource.AI;
 import com.reality360.resource.Entity;
 
 public class Tile extends Entity {

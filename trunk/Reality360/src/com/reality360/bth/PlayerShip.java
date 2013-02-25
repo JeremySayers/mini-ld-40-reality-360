@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import com.reality360.Reality360;
-import com.reality360.climber.Climber;
 import com.reality360.resource.Entity;
 import com.redsoxfan.libs.pixtact.Pixtact;
 

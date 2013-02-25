@@ -1,6 +1,5 @@
 package com.reality360.bth;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 import com.reality360.resource.AI;

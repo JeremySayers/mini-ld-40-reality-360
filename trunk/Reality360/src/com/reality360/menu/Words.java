@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 public class Words {
 	
-	public static final Color LETTER_COLOR = Color.WHITE, VOID_COLOR = new Color(0,0,0,0);
+	public static Color LETTER_COLOR = Color.WHITE, VOID_COLOR = new Color(0,0,0,0);
 	
 	private static final String[] A = {"xxxxx",
 		"x...x",
@@ -193,6 +193,11 @@ public class Words {
 		".....",
 		".xx..",
 		".xx.."};
+	private static final String[] DASH = {".....",
+		".xxx.",
+		".xxx.",
+		".....",
+		"....."};
 	public static BufferedImage menuWord(String word, int LETTER_IMG_WIDTH, int LETTER_IMG_HEIGHT){
 		word=word.toUpperCase();
 		BufferedImage img = new BufferedImage(LETTER_IMG_WIDTH*word.length()+5*word.length(),LETTER_IMG_HEIGHT,BufferedImage.TYPE_INT_ARGB);
@@ -244,6 +249,7 @@ public class Words {
 		case '8': return makeLetterImage(EIGHT,LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT);
 		case '9': return makeLetterImage(NINE,LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT);
 		case '.': return makeLetterImage(PERIOD,LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT);
+		case '-': return makeLetterImage(DASH,LETTER_IMG_WIDTH,LETTER_IMG_HEIGHT);
 		default: return null;
 		}
 	}
@@ -259,6 +265,9 @@ public class Words {
 			yPos+=LETTER_IMG_HEIGHT/5;
 		}
 		return img;
+	}
+	public static void setLetterColor(Color c) {
+		LETTER_COLOR = c;
 	}
 	private static void fillColor(BufferedImage img, int xPos, int yPos, int width, int height, Color c){
 		for(int y=yPos; y<yPos+height; y++){

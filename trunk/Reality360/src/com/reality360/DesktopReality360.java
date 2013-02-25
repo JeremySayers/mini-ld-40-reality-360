@@ -9,9 +9,6 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.JFrame;
 
@@ -25,8 +22,8 @@ public class DesktopReality360 {
 	public static final GraphicsDevice DEVICE = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	public static final JFrame FRAME = new JFrame("Reality 360 (Desktop Version)");
 	public static final GamePanel GAME = new GamePanel();
-    public static final int HEIGHT = 600;
-    public static final int WIDTH = 800;
+    public static final int HEIGHT = Reality360.HEIGHT;
+    public static final int WIDTH = Reality360.WIDTH;
 	public static void main(String[] args) {
 		new DesktopReality360();
 	}

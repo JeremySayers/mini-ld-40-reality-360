@@ -1,7 +1,6 @@
 package com.reality360.climber;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -138,5 +137,10 @@ public class Player extends Entity {
 	}
 	public void stop() {
 		xVel = 0;
+	}
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	} 
 }

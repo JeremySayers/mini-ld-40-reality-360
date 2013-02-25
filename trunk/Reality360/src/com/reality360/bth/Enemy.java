@@ -2,7 +2,6 @@ package com.reality360.bth;
 
 import java.awt.Image;
 
-import com.reality360.Reality360;
 import com.reality360.resource.AI;
 import com.redsoxfan.libs.pixtact.Pixtact;
 

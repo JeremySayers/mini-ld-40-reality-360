@@ -33,8 +33,15 @@ public class Climber extends Level {
 	private int startTick = 0;
 	private boolean canRestart = false;
 	private int deadTick = 0;
+	private boolean instructions;
+	private boolean skipInfo = false;
+	private boolean button1 = false;
 	public static final Sound snd = new Sound("/com/reality360/sounds/Climber.mp3", true);
 	public Climber() {
+		this(false);
+	}
+	public Climber(boolean skip) {
+		skipInfo = skip;
 		DOOR.move(400-DOOR.getWidth()/2, 540-DOOR.getHeight());
 		for (int i=0; i<16; i++) {
 			tiles[i] = new Tile[20];
@@ -88,15 +95,22 @@ public class Climber extends Level {
 		}
 	}
 	public void keyPressed(KeyEvent e) {
-		if (distance<maxDistance || (end && !player.isCollidingWith(DOOR))) {
+		if (instructions) {
+			
+		} else if (distance<maxDistance || (end && !player.isCollidingWith(DOOR))) {
 			player.keyPressed(e);
 		} else {
 			player.stop();
 		}
 	}
 	public void keyReleased(KeyEvent e) {
-		move = !end;
-		if (distance<maxDistance || (end && !player.isCollidingWith(DOOR))) {
+		move = !instructions && !end;
+		if (instructions) {
+			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+				instructions = false;
+				playable = true;
+			}
+		} else if (distance<maxDistance || (end && !player.isCollidingWith(DOOR))) {
 			player.keyReleased(e);
 		} else {
 			player.stop();
@@ -143,7 +157,51 @@ public class Climber extends Level {
 				next = true;
 			}
 		}
-		if (deadTick>0) {
+		if (instructions) {
+			g.setColor(new Color(255, 255, 255, 192));
+			g.fillRoundRect(50, 50, Reality360.WIDTH-100, Reality360.HEIGHT-100, 100, 100);
+			String msg = "C]LEVEL 1 - CLIMBER\n" +
+					"\n" +
+					"\n" +
+					"\n" +
+					"Objective:\n" +
+					"\tTo get to the top of the map which\n" +
+					"\tcontains a door to the next level\n" +
+					"\n" +
+					"Keyboard Controls:\n"+
+					"\tLeft Arrow Key - Go Left\n" +
+					"\tRight Arrow Key - Go Right\n" +
+					"\tSpace - Jump\n" +
+					"\n" +
+					"Joystick Controls - Desktop Only:\n"+
+					"\tX Axis - Move Left/Right\n" +
+					"\tButton 2 - Jump\n" +
+					"\n" +
+					"\n" +
+					"\n" +
+					"\n" +
+					"\n" +
+					"\n" +
+					"C]Press SPACE or Button 2 to Continue";
+			int y = 100;
+			Words.setLetterColor(Color.BLACK);
+			for (String m:msg.split("\n")) {
+				if (m.isEmpty()) m = " ";
+				m = m.replace("\t", "  ");
+				boolean center = m.startsWith("C]");
+				if (center) {
+					m = m.substring(2);
+				}
+				BufferedImage img = Words.menuWord(m, 12, 12);
+				if (center) {
+					g.drawImage(img, Reality360.WIDTH/2-img.getWidth()/2, y, null);
+				} else {
+					g.drawImage(img, 75, y, null);
+				}
+				y += img.getHeight()+5;
+			}
+			Words.setLetterColor(Color.WHITE);
+		} else if (deadTick>0) {
 			g.setColor(Color.BLACK);
 			int h = (int)(Reality360.HEIGHT/2*(deadTick/100.0));
 			g.setColor(Color.BLACK);
@@ -168,13 +226,20 @@ public class Climber extends Level {
 			g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
 			t -= 100;
 			if (t>0) {
-				playable = true;
+				if (skipInfo) {
+					instructions = false;
+					playable = true;
+				} else {
+					instructions = true;
+				}
 			}
 		}
 	}
 	public void tick() {
 		if (!playable) {
 			startTick ++;
+		} else if (instructions) {
+			
 		} else if (end && player.isCollidingWith(DOOR)) {
 			boolean yLoc = player.getY()>DOOR.getY()+DOOR.getHeight()/2;
 			boolean size = player.getWidth()/2>0 && player.getHeight()/2>0;
@@ -225,7 +290,7 @@ public class Climber extends Level {
 		} else {
 			if (canRestart) {
 				snd.pause();
-				GamePanel.level = new Climber();
+				GamePanel.level = new Climber(true);
 			} else {
 				deadTick++;
 			}
@@ -234,13 +299,32 @@ public class Climber extends Level {
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
-		if ((distance<maxDistance || player.getY()+player.getHeight()>(distance-maxDistance)*40) || (end && !player.isCollidingWith(DOOR))) {
-			player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
-			if (!move && (xAxis<40 || xAxis>60 || buttons.get(1))) {
-				move = !end;
+		if (instructions) {
+			if (buttons.get(1)) {
+				instructions = false;
+				playable = true;
+				button1 = true;
+			}
+		} else if ((distance<maxDistance || player.getY()+player.getHeight()>(distance-maxDistance)*40) || (end && !player.isCollidingWith(DOOR))) {
+			if (!button1) {
+				player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
+				if (!move && (xAxis<40 || xAxis>60 || buttons.get(1))) {
+					move = playable && !end;
+				}
+			} else {
+				button1 = buttons.get(1);
 			}
 		} else {
 			player.stop();
 		}
+	}
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
