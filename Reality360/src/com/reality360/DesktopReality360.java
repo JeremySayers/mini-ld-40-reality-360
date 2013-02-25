@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -43,23 +44,7 @@ public class DesktopReality360 {
 		GAME.addKeyListener(new KeyAdapter(){
 	        public void keyReleased(KeyEvent event) {
                 if (event.getKeyCode()==KeyEvent.VK_F) {
-                	if (DEVICE.getFullScreenWindow()==null) {
-                        GAME.setPreferredSize(new Dimension(1,1));
-                        FRAME.setVisible(false);
-                        FRAME.dispose();
-                        FRAME.setUndecorated(true);
-                        FRAME.setVisible(true);
-                        DEVICE.setFullScreenWindow(FRAME);
-                        GAME.requestFocus();
-	                } else {
-                        GAME.setPreferredSize(new Dimension(1,1));
-                        FRAME.setVisible(false);
-                        FRAME.dispose();
-                        FRAME.setUndecorated(false);
-                        FRAME.setVisible(true);
-                        DEVICE.setFullScreenWindow(null);
-                        GAME.requestFocus();
-	                }
+                	setFullscreen(DEVICE.getFullScreenWindow()==null);
                 }
 	        }
 		});
@@ -82,11 +67,36 @@ public class DesktopReality360 {
 		                		joystick.componentExists(Identifier.Axis.RY)?stick?joystick.getYRotationPercentage():joystick.getYRotationValue():0,
 		                		joystick.componentExists(Identifier.Axis.Z)?stick?joystick.getZAxisPercentage():joystick.getZAxisValue():0,
 		                		joystick.componentExists(Identifier.Axis.RZ)?stick?joystick.getZRotationPercentage():joystick.getZRotationValue():0);
+		                if (joystick.getButtonValue(8)) {
+		                	setFullscreen(false);
+		                }
+		                if (joystick.getButtonValue(9)) {
+		                	setFullscreen(true);
+		                }
 					}
 				} catch (Exception e) {
 				}
             	GAME.tick();
             }
 		}, 1, 1000/60);
+	}
+	public void setFullscreen(boolean fulls) {
+		if (fulls) {
+			GAME.setPreferredSize(new Dimension(1,1));
+            FRAME.setVisible(false);
+            FRAME.dispose();
+            FRAME.setUndecorated(true);
+            FRAME.setVisible(true);
+            DEVICE.setFullScreenWindow(FRAME);
+            GAME.requestFocus();
+        } else {
+            GAME.setPreferredSize(new Dimension(1,1));
+            FRAME.setVisible(false);
+            FRAME.dispose();
+            FRAME.setUndecorated(false);
+            FRAME.setVisible(true);
+            DEVICE.setFullScreenWindow(null);
+            GAME.requestFocus();
+        }
 	}
 }

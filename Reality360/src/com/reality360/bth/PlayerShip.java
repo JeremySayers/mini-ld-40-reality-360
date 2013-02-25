@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import com.reality360.Reality360;
+import com.reality360.climber.Climber;
 import com.reality360.resource.Entity;
 import com.redsoxfan.libs.pixtact.Pixtact;
 
@@ -121,6 +122,34 @@ public class PlayerShip extends Entity{
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
-		
+		if (xAxis>60){
+			rightKey = true;
+			leftKey = false;
+        } else if (xAxis<40){
+        	leftKey = true;
+        	rightKey = false;
+        } else {
+        	leftKey = false;
+        	rightKey = false;
+        }
+		if (yAxis>60){
+			downKey = true;
+			upKey = false;
+        } else if (yAxis<40){
+        	upKey = true;
+        	downKey = false;
+        } else {
+        	upKey = false;
+        	downKey = false;
+        }
+        shooting = buttons.get(1);
+        powerLevel = 0;
+        if (buttons.get(4)) {
+        	powerLevel = 30;
+        } else if (buttons.get(5)) {
+        	powerLevel = 60;
+        } else if (buttons.get(6)) {
+        	powerLevel = 90;
+        }
 	}
 }

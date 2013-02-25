@@ -16,7 +16,7 @@ public class Tile extends Entity {
 	public Tile(int life) {
 		killable  = life!=0;
 		this.life = life==0?Integer.MAX_VALUE:life;
-		tile = Reality360.loadAsPixtact(life==0?"/Tile.jpg":"/PoofTile.jpg", 40, 10);
+		tile = Reality360.loadAsPixtact(life==0?"/Tile.png":"/PoofTile.png", 40, 10);
 	}
 	public Pixtact getPixtact() {
 		return tile;

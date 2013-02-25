@@ -23,6 +23,17 @@ public class Player extends Entity {
 	public Player() {
 		player.setLocation(Reality360.WIDTH/2-player.getWidth()/2, 440);
 	}
+	public void resize(int w, int h) {
+		player.setX(player.getX()+player.getWidth()/2-w/2);
+		player.setY(player.getY()+player.getHeight()/2-h/2);
+		player.resize(w, h);
+	}
+	public int getWidth() {
+		return player.getWidth();
+	}
+	public int getHeight() {
+		return player.getHeight();
+	}
 	public int getX() {
 		return player.getX();
 	}
@@ -118,5 +129,14 @@ public class Player extends Entity {
         	yVel = 10*40/Climber.speed;
 			jumping = true;
         }
+	}
+	public void setX(int x) {
+		player.setX(x);
+	}
+	public void setY(int y) {
+		player.setY(y);
+	}
+	public void stop() {
+		xVel = 0;
 	} 
 }
