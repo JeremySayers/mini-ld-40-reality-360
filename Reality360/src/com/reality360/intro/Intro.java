@@ -121,8 +121,6 @@ public class Intro extends Level {
 						"       Extracting Homosapiens.tar.gz ... \b \b \b \b \b \b \b\n" +
 						"           Extracting Hilter.tar.gz ... \b \b \b \b \b \b \b\n" +
 						"       Extracting BigFoot.tar.gz ... \b \b \b \b \b \b\n"+
-						"       Extracting Idiots.tar.gz ... \b \b \b \b \b \b\n" +
-						"           Extracting SayersJeremy.tar.gz ... \b \b \b \b \b \b\n" +
 						"       Extracting Australians.tar.gz ... \b \b \b \b \b \b \b\n" +
 						"\n" +
 						"Disabling TimeTravel ... \b \b \b \b\n" +

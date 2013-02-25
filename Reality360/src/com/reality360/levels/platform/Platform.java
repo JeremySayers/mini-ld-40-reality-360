@@ -35,6 +35,7 @@ public class Platform extends Level {
 		end = false;
 		secretTick = 0;
 		currentRoom = 0;
+		secrets = new boolean[secrets.length];
 		rooms = new Room(currentRoom);
 		tiles= rooms.getCurrentRoom();
 		bg = Reality360.loadImage("/Background1.png",900,700);
@@ -142,7 +143,8 @@ public class Platform extends Level {
 					"\tTo get to the end\n" +
 					"\n" +
 					"Secondary Objective:\n" +
-					"\tTo find as many of the "+secrets.length+" secrets as possible\n"+
+					"\tTo find as many of the "+secrets.length+" secrets\n" +
+					"\tas possible\n"+
 					"\n" +
 					"Keyboard Controls:\n"+
 					"\tLeft Arrow Key - Go Left\n" +
@@ -150,7 +152,7 @@ public class Platform extends Level {
 					"\tSpace - Jump\n" +
 					"\n" +
 					"Joystick Controls - Desktop Only:\n"+
-					"\tX Axis - Move Left/Right\n" +
+					"\tX Axis - Move Left or Right\n" +
 					"\tButton 2 - Jump\n" +
 					"\n" +
 					"\n" +
@@ -192,8 +194,7 @@ public class Platform extends Level {
 			if (t>0) {
 				instructions = true;
 			}
-		}
-		if (secretTick>0) {
+		} else if (secretTick>0) {
 			if (secretTick%10<5) {
 				int i = 0;
 				for (boolean s:secrets) {

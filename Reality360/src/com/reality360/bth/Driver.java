@@ -1,10 +1,13 @@
 package com.reality360.bth;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import com.reality360.Reality360;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
 import com.redsoxfan.libs.pixtact.Pixtact;
@@ -18,6 +21,10 @@ public class Driver extends Level{
 	public static PlayerShip player;
 	private int scrolldistance1 = 0, scrolldistance2 = -700, tickCount = 18000;
 	private Pixtact background1, background2;
+	private boolean instructions;
+	private boolean playable;
+	private int startTick;
+	private boolean button1;
 	
 	public Driver(){
 		background1 = Pixtact.read(getClass().getResource("/bthBackground.png"));
@@ -62,74 +69,150 @@ public class Driver extends Level{
 			}
 		}
 		g.drawImage(Words.menuWord(Integer.toString(tickCount/60),20,20),400,10,Integer.toString(tickCount/60).length()*20,20,null);
+		
+		if (instructions) {
+			g.setColor(new Color(255, 255, 255, 192));
+			g.fillRoundRect(50, 50, Reality360.WIDTH-100, Reality360.HEIGHT-100, 100, 100);
+			String msg = "C]LEVEL 3 - BOSS LEVEL\n" +
+					"\n" +
+					"Objective:\n" +
+					"\tTo survive until the timer reaches\n" +
+					"\tzero then defeat the master Virtual\n" +
+					"\tReality core\n" +
+					"\n" +
+					"\tMake sure to grab pickups to boost\n"+ 
+					"\tyour damage and health\n" +
+					"\t\t-Green pickups are HP\n" +
+					"\t\t-Yellow pickups are Damage\n" +
+					"\n" +
+					"\tHealth and Damage Bars are in bottom\n" +
+					"\tleft along with the timer\n" +
+					"\n"+
+					"Keyboard Controls:\n"+
+					"\tArrow Keys - Move\n" +
+					"\tSpace - Shoot\n" +
+					"\n" +
+					"Joystick Controls - Desktop Only:\n"+
+					"\tX Axis - Move Left or Right\n" +
+					"\tY Axis - Move Up or Down\n" +
+					"\tButton 2 - Shoot\n" +
+					"\n" +
+					"C]Press SPACE or Button 2 to Continue";
+			int y = 100;
+			Words.setLetterColor(Color.BLACK);
+			for (String m:msg.split("\n")) {
+				if (m.isEmpty()) m = " ";
+				m = m.replace("\t", "  ");
+				boolean center = m.startsWith("C]");
+				if (center) {
+					m = m.substring(2);
+				}
+				BufferedImage img = Words.menuWord(m, 12, 12);
+				if (center) {
+					g.drawImage(img, Reality360.WIDTH/2-img.getWidth()/2, y, null);
+				} else {
+					g.drawImage(img, 75, y, null);
+				}
+				y += img.getHeight()+5;
+			}
+			Words.setLetterColor(Color.WHITE);
+		} else if (!playable) {
+			int t = startTick;
+			int h = 0;
+			g.setColor(Color.BLACK);
+			h = (int)(Reality360.HEIGHT/2 - Reality360.HEIGHT/2*(t/100.0));
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, Reality360.WIDTH, h-5);
+			g.fillRect(0, Reality360.HEIGHT-h+5, Reality360.WIDTH, h);
+			g.setColor(Color.GREEN);
+			g.fillRect(0, h-5, Reality360.WIDTH, 5);
+			g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
+			t -= 100;
+			if (t>0) {
+				instructions = true;
+			}
+		}
 	}
 	public void tick() {
-		synchronized(enemies){
-			for(int i=0; i<enemies.size(); i++){
-				if(!enemies.get(i).isAlive()){
-					enemies.remove(i);
-					i--;
-				}else{ 
-					enemies.get(i).tick();
-					synchronized(projectiles){
-						for(PlayerProjectile p:projectiles){
-							if(enemies.get(i).isHit(p.getImg())){
-								enemies.get(i).doDamage(p.getDamage());
-								p.kill();
+		if (!playable) {
+			startTick ++;
+		} else if (!instructions) {
+			synchronized(enemies){
+				for(int i=0; i<enemies.size(); i++){
+					if(!enemies.get(i).isAlive()){
+						enemies.remove(i);
+						i--;
+					}else{ 
+						enemies.get(i).tick();
+						synchronized(projectiles){
+							for(PlayerProjectile p:projectiles){
+								if(enemies.get(i).isHit(p.getImg())){
+									enemies.get(i).doDamage(p.getDamage());
+									p.kill();
+								}
 							}
 						}
 					}
 				}
 			}
-		}
-		synchronized(bullets){
-			for(int i=0; i<bullets.size(); i++){
-				if(!bullets.get(i).isAlive()){
-					bullets.remove(i);
-					i--;
-				}else{
-					bullets.get(i).tick();
-					if(bullets.get(i).collision()){
-						Driver.player.doDamge(bullets.get(i).getDamage());
+			synchronized(bullets){
+				for(int i=0; i<bullets.size(); i++){
+					if(!bullets.get(i).isAlive()){
 						bullets.remove(i);
+						i--;
+					}else{
+						bullets.get(i).tick();
+						if(bullets.get(i).collision()){
+							Driver.player.doDamge(bullets.get(i).getDamage());
+							bullets.remove(i);
+						}
 					}
 				}
 			}
-		}
-		synchronized(projectiles){
-			for(int i=0; i<projectiles.size(); i++){
-				if(!projectiles.get(i).isAlive()){
-					projectiles.remove(i);
-					i--;
-				}else{
-					projectiles.get(i).tick();
+			synchronized(projectiles){
+				for(int i=0; i<projectiles.size(); i++){
+					if(!projectiles.get(i).isAlive()){
+						projectiles.remove(i);
+						i--;
+					}else{
+						projectiles.get(i).tick();
+					}
 				}
 			}
-		}
-		if(tickCount%120==0){
-			if(tickCount/60>280){
-				if(enemies.size()<3)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,10));
-				else if(Math.random()*100>=90) enemies.add(new WallEnemy(15,(Math.random()>.5)));
-			}else if(tickCount/60>240){
-				if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,20));
-				else if(Math.random()*100>=80) enemies.add(new WallEnemy(30,(Math.random()>.5)));
-			}else if(tickCount/60>200){
-				if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,30));
-				else if(Math.random()*100>=70) enemies.add(new WallEnemy(50,(Math.random()>.5)));
-			}else if(tickCount/60>150){
-				
+			if(tickCount%120==0){
+				if(tickCount/60>280){
+					if(enemies.size()<3)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,10));
+					else if(Math.random()*100>=90) enemies.add(new WallEnemy(15,(Math.random()>.5)));
+				}else if(tickCount/60>240){
+					if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,20));
+					else if(Math.random()*100>=80) enemies.add(new WallEnemy(30,(Math.random()>.5)));
+				}else if(tickCount/60>200){
+					if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,30));
+					else if(Math.random()*100>=70) enemies.add(new WallEnemy(50,(Math.random()>.5)));
+				}else if(tickCount/60>150){
+					
+				}
 			}
+			tickCount--;
+			scrolldistance1++;
+			scrolldistance2++;
+			player.tick();
 		}
-		tickCount--;
-		scrolldistance1++;
-		scrolldistance2++;
-		player.tick();
 	}
 	public void keyPressed(KeyEvent e) {
-		player.keyPressed(e);
+		if (!instructions) {
+			player.keyPressed(e);
+		}
 	}
 	public void keyReleased(KeyEvent e) {
-		player.keyReleased(e);
+		if (instructions) {
+			if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+				instructions = false;
+				playable = true;
+			}
+		} else {
+			player.keyReleased(e);
+		}
 	}
 	public void mousePressed(MouseEvent e) {
 		
@@ -140,7 +223,17 @@ public class Driver extends Level{
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
-		player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
+		if (instructions) {
+			if (buttons.get(1)) {
+				instructions = false;
+				playable = true;
+				button1 = true;
+			}
+		} else if (button1) {
+			button1 = buttons.get(1);
+		}  else {
+			player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
+		}
 	}
 	@Override
 	public void mouseMoved(MouseEvent e) {
