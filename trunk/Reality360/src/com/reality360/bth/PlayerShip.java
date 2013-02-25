@@ -12,11 +12,12 @@ import com.redsoxfan.libs.pixtact.Pixtact;
 public class PlayerShip extends Entity{
 
 	private Pixtact img = null, player = null;
-	private int powerLevel = 0, powerTemp = 0;
+	private int powerLevel = 0, powerTemp = 0, hitPoints = 100;
 	private int speed = 5;
 	private int width = 30, height = 30, xPos = 385, yPos = 550;
 	private long tickCount = 0;
 	private boolean isAlive = false, upKey = false, downKey = false, leftKey = false, rightKey = false, shooting = false;
+	private HealthBar hb;
 	
 	public PlayerShip(){
 		img = Pixtact.read(getClass().getResource("/redbullet.png"));
@@ -27,6 +28,7 @@ public class PlayerShip extends Entity{
 		player.resize(width, height);
 		player.setX(xPos);
 		player.setY(yPos);
+		hb = new HealthBar(hitPoints,100,10);
 		isAlive = true;
 	}
 	public int getX() {
@@ -68,9 +70,16 @@ public class PlayerShip extends Entity{
 	public void mousePressed(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}
 	
+	public void doDamge(int damage){
+		hb.doDamage(damage);
+	}
+	public int getHP(){
+		return hb.currentHp();
+	}
 	public void paint(Graphics g) {
 		player.drawImage(g);
 		img.drawImage(g);
+		hb.drawBar(350,590,g);
 	}
 	public void tick() {
 		if(upKey){

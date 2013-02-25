@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import com.reality360.menu.Words;
 import com.reality360.resource.Level;
 import com.redsoxfan.libs.pixtact.Pixtact;
 
@@ -13,8 +14,9 @@ public class Driver extends Level{
 	public static ArrayList<Enemy> enemies;
 	public static ArrayList<Bullet> bullets;
 	public static ArrayList<PlayerProjectile> projectiles;
+	public static ArrayList<Pickup> pickups;
 	public static PlayerShip player;
-	private int scrolldistance1 = 0, scrolldistance2 = -700;
+	private int scrolldistance1 = 0, scrolldistance2 = -700, tickCount = 18000;
 	private Pixtact background1, background2;
 	
 	public Driver(){
@@ -25,18 +27,15 @@ public class Driver extends Level{
 		enemies = new ArrayList<Enemy>();
 		bullets = new ArrayList<Bullet>();
 		projectiles = new ArrayList<PlayerProjectile>();
+		pickups = new ArrayList<Pickup>();
 		player = new PlayerShip();
-		enemies.add(new Enemy(650,100,100,200,100));
-		enemies.add(new Enemy(700,300,200,200,100));
-		enemies.add(new Enemy(200,200,300,200,100));
-		enemies.add(new Enemy(0,400,400,200,100));
 	}
 	public void paint(Graphics g) {
 		
 		background1.setX(0-player.getX()*100/800);
-		background1.setY(0-player.getY()*100/800+scrolldistance1);
+		background1.setY(scrolldistance1);
 		background2.setX(0-player.getX()*100/800);
-		background2.setY(0-player.getY()*100/800+scrolldistance2);
+		background2.setY(scrolldistance2);
 		
 		if(scrolldistance1>=700){
 			scrolldistance1=-700;
@@ -62,6 +61,7 @@ public class Driver extends Level{
 				p.paint(g);
 			}
 		}
+		g.drawImage(Words.menuWord(Integer.toString(tickCount/60),20,20),400,10,Integer.toString(tickCount/60).length()*20,20,null);
 	}
 	public void tick() {
 		synchronized(enemies){
@@ -89,6 +89,10 @@ public class Driver extends Level{
 					i--;
 				}else{
 					bullets.get(i).tick();
+					if(bullets.get(i).collision()){
+						Driver.player.doDamge(bullets.get(i).getDamage());
+						bullets.remove(i);
+					}
 				}
 			}
 		}
@@ -102,6 +106,21 @@ public class Driver extends Level{
 				}
 			}
 		}
+		if(tickCount%120==0){
+			if(tickCount/60>280){
+				if(enemies.size()<3)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,10));
+				else if(Math.random()*100>=90) enemies.add(new WallEnemy(15,(Math.random()>.5)));
+			}else if(tickCount/60>240){
+				if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,20));
+				else if(Math.random()*100>=80) enemies.add(new WallEnemy(30,(Math.random()>.5)));
+			}else if(tickCount/60>200){
+				if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,30));
+				else if(Math.random()*100>=70) enemies.add(new WallEnemy(50,(Math.random()>.5)));
+			}else if(tickCount/60>150){
+				
+			}
+		}
+		tickCount--;
 		scrolldistance1++;
 		scrolldistance2++;
 		player.tick();
