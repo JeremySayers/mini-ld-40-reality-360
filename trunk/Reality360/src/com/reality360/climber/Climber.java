@@ -12,19 +12,21 @@ import com.reality360.Reality360;
 import com.reality360.levels.platform.Platform;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
+import com.reality360.sounds.Sound;
 import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Climber extends Level {
 	private Player player = new Player();
 	private int tick = 0;
 	public static Tile[][] tiles = new Tile[16][20];
-	private static final Image BG = Reality360.loadImage("/redcomputer1.png");
+	private static final Image BG = Reality360.loadImage("/purp_lepie.png");
 	private static final Pixtact DOOR = Reality360.loadAsPixtact("/Ethernet.png");
 	public static int speed = 20;
 	public int distance = 0;
-	public int maxDistance = 600;
+	public int maxDistance = 666;
 	private boolean end = false;
 	private boolean move = false;
+	public static final Sound snd = new Sound("/com/reality360/sounds/Climber.mp3", true);
 	public Climber() {
 		DOOR.move(400-DOOR.getWidth()/2, 540-DOOR.getHeight());
 		for (int i=0; i<16; i++) {
@@ -36,6 +38,7 @@ public class Climber extends Level {
 		for (int r=12; r>=0; r-=2) {
 			generate(r);
 		}
+		snd.play();
 	}
 	private Tile createTile() {
 		return new Tile(Math.random()>0.9?speed/2:0);
@@ -118,6 +121,7 @@ public class Climber extends Level {
 	}
 	public void tick() {
 		if (distance>=maxDistance && player.isCollidingWith(DOOR)) {
+			snd.pause();
 			GamePanel.level = new Platform();
 		} else if (player.isAlive()) {
 			player.tick();

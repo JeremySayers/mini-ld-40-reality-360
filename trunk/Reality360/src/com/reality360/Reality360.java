@@ -49,9 +49,6 @@ public class Reality360 extends Applet {
 		});
 		/* End Of Full Screen Pop Out Class */
 		
-		Sound s = new Sound("/com/reality360/sounds/ChocRain8b.mp3", true);
-		s.play();
-		
 		GAME.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), new Point(0, 0), "Blank"));
 		
 		new java.util.Timer().scheduleAtFixedRate(new java.util.TimerTask(){

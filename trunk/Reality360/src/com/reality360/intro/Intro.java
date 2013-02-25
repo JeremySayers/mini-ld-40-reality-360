@@ -17,6 +17,7 @@ import com.reality360.menu.Menu;
 import com.reality360.menu.Menu.MenuFunction;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
+import com.reality360.sounds.Sound;
 
 public class Intro extends Level {
 	public int ticks = 0;
@@ -26,10 +27,12 @@ public class Intro extends Level {
 	private static final Image menubg = Reality360.loadImage("/title.jpg");
 	private static final Menu menu = new Menu(" ");
 	private static int start = 0;
+	public static final Sound snd = new Sound("/com/reality360/sounds/ChocRain8b.mp3", true);
 	public Intro() {
 		ticks = 1800;
 		menu.addSelection(new MenuFunction() {
 			public void run() {
+				snd.pause();
 				GamePanel.level = new Climber();
 			}
 			public String name() {
@@ -53,6 +56,7 @@ public class Intro extends Level {
 				return "Settings";
 			}
 		});
+		snd.play();
 	}
 	public void keyPressed(KeyEvent e) {
 		
