@@ -78,6 +78,11 @@ public class GamePanel extends JPanel {
 					level.mouseMoved(e);
 				}
 			}
+			public void mouseDragged(MouseEvent e) {
+				if (level!=null){
+					level.mouseMoved(e);
+				}
+			}
 		});
 	}
 	public void joystickValue(boolean stick, ArrayList<Boolean> buttons, float xAxis, float xRot, float yAxis, float yRot, float zAxis, float zRot) {

@@ -1,5 +1,6 @@
 package com.reality360.levels.defendthebase;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -20,19 +21,48 @@ public class Base extends Entity{
 	private int playerH = 100;
 	private int centerX = playerX+playerW/2;
 	private int centerY = playerY+playerH/2;
+	private int reloadCountDown;
+	private boolean requestFire;
+	private boolean canFire = true;
 	Image base = Reality360.loadImage("/Base.png", 100, 100);
 	ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	public Base(){
 		
 	}
 	public void paint(Graphics g) {
+		g.setColor(Color.RED);
+		for (Bullet b: bullets){
+			g.fillOval(b.getX(), b.getY(), 10, 10);
+		}
 		RotateImage.rotate(g,playerX,playerY,base,playerRotation);
 	}
 
 	public void tick() {
+		for (Bullet b: bullets){
+			b.move(2);
+		}
 		calculateRotation();
+		if (reloadCountDown > 0){
+			reloadCountDown--;
+		} else {
+			canFire = true;
+			reloadCountDown = 45;
+		}
+		if(requestFire){
+			if(canFire){
+				fire();
+			}
+		}
 	}
+	
+	public void fire(){
 
+		System.out.println("YOLO");
+		if (canFire){
+			bullets.add(new Bullet(centerX,centerY,mouseX,mouseY,40));
+			canFire = false;
+		}
+	}
 	public void calculateRotation(){
 		if (mouseX-centerX > 0 && mouseY-centerY >0){
 			playerRotation = (int) (Math.toDegrees(Math.atan(1.0*(mouseY-centerY)/(mouseX-centerX))));
@@ -78,11 +108,12 @@ public class Base extends Entity{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		requestFire = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		requestFire = false;
 		
 	}
 
@@ -109,6 +140,18 @@ public class Base extends Entity{
 	}
 	public void setMouseY(int mouseY) {
 		this.mouseY = mouseY;
+	}
+	public int getCenterX() {
+		return centerX;
+	}
+	public void setCenterX(int centerX) {
+		this.centerX = centerX;
+	}
+	public int getCenterY() {
+		return centerY;
+	}
+	public void setCenterY(int centerY) {
+		this.centerY = centerY;
 	}
 
 }
