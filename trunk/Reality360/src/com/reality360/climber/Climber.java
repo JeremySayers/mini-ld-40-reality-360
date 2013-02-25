@@ -174,7 +174,7 @@ public class Climber extends Level {
 					"\tSpace - Jump\n" +
 					"\n" +
 					"Joystick Controls - Desktop Only:\n"+
-					"\tX Axis - Move Left/Right\n" +
+					"\tX Axis - Move Left or Right\n" +
 					"\tButton 2 - Jump\n" +
 					"\n" +
 					"\n" +
