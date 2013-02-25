@@ -23,7 +23,9 @@ public class Intro extends Level {
 	public int ticks = 0;
 	public int closedTicks = 0;
 	public boolean credits = false;
+	public boolean level1 = false;
 	private float y = 50;
+	private boolean sensitive = false;
 	private static final Image menubg = Reality360.loadImage("/title.jpg");
 	private static final Menu menu = new Menu(" ");
 	private static int start = 0;
@@ -32,8 +34,9 @@ public class Intro extends Level {
 		ticks = 1800;
 		menu.addSelection(new MenuFunction() {
 			public void run() {
-				snd.pause();
-				GamePanel.level = new Climber();
+				sensitive = false;
+				level1 = true;
+				start = ticks;
 			}
 			public String name() {
 				return "Start";
@@ -41,6 +44,7 @@ public class Intro extends Level {
 		});
 		menu.addSelection(new MenuFunction() {
 			public void run() {
+				sensitive = false;
 				credits = true;
 				start = ticks;
 			}
@@ -62,12 +66,14 @@ public class Intro extends Level {
 		
 	}
 	public void keyReleased(KeyEvent e) {
-		if (e.getKeyCode()==KeyEvent.VK_UP) {
-			menu.selectorUp();
-		} else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
-			menu.selectorDown();
-		} else if (e.getKeyCode()==KeyEvent.VK_ENTER) {
-			menu.select();
+		if (sensitive) {
+			if (e.getKeyCode()==KeyEvent.VK_UP) {
+				menu.selectorUp();
+			} else if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+				menu.selectorDown();
+			} else if (e.getKeyCode()==KeyEvent.VK_ENTER) {
+				menu.select();
+			}
 		}
 	}
 	public void mousePressed(MouseEvent e) {
@@ -166,6 +172,9 @@ public class Intro extends Level {
 						g.fillRect(0, h-5, Reality360.WIDTH, 5);
 						g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
 						t -= 100;
+						if (t>0) {
+							sensitive = true;
+						}
 					} else if (t%30>10) {
 						g.setColor(Color.WHITE);
 						BufferedImage word = Words.menuWord("Initializing...", 35, 35);
@@ -185,6 +194,21 @@ public class Intro extends Level {
 				if (h>=Reality360.HEIGHT/2) {
 					GamePanel.level = new Credits(this);
 					credits = false;
+				}
+				t -= 100;
+			} else if (t>0 && level1) {
+				g.setColor(Color.BLACK);
+				int h = (int)(Reality360.HEIGHT/2*((ticks-start)/100.0));
+				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, Reality360.WIDTH, h-5);
+				g.fillRect(0, Reality360.HEIGHT-h+5, Reality360.WIDTH, h);
+				g.setColor(Color.GREEN);
+				g.fillRect(0, h-5, Reality360.WIDTH, 5);
+				g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
+				if (h>=Reality360.HEIGHT/2) {
+					snd.pause();
+					GamePanel.level = new Climber();
+					level1 = false;
 				}
 				t -= 100;
 			}
@@ -207,14 +231,16 @@ public class Intro extends Level {
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
-		if (yAxis>40 && yAxis<60 && y<40) {
-			menu.selectorUp();
-		} else if (yAxis>40 && yAxis<60 && y>60) {
-			menu.selectorDown();
+		if (sensitive) {
+			if (yAxis>40 && yAxis<60 && y<40) {
+				menu.selectorUp();
+			} else if (yAxis>40 && yAxis<60 && y>60) {
+				menu.selectorDown();
+			}
+			if (buttons.get(1)) {
+				menu.select();
+			}
+			y  = yAxis;
 		}
-		if (buttons.get(1)) {
-			menu.select();
-		}
-		y  = yAxis;
 	}
 }

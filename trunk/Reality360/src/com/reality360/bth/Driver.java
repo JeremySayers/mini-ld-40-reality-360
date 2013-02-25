@@ -119,6 +119,6 @@ public class Driver extends Level{
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
-		
+		player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
 	}
 }

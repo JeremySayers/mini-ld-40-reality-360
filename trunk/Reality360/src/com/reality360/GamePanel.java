@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import com.reality360.intro.Intro;
+import com.reality360.climber.Climber;
 import com.reality360.levels.platform.Platform;
 import com.reality360.resource.Level;
 import com.redsoxfan.libs.pixtact.Pixtact;
@@ -43,9 +44,13 @@ public class GamePanel extends JPanel {
 					level = new Platform();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_B) {
 					level = new com.reality360.bth.Driver();
+				} else if (arg0.getKeyCode()==KeyEvent.VK_C) {
+					level = new Climber();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_I) {
 					if (INTRO==null) {
 						INTRO = new Intro();
+					} else {
+						INTRO.ticks = INTRO.closedTicks;
 					}
 					level = INTRO;
 				}
