@@ -45,7 +45,7 @@ public class Player extends Entity {
 			player.changeImage(MOVE_LEFT);
 		}
 		if (e.getKeyCode()==KeyEvent.VK_SPACE && !jumping) {
-			yVel = 15*40/Climber.speed;
+			yVel = 10*40/Climber.speed;
 			jumping = true;
 		}
 	}
@@ -79,18 +79,18 @@ public class Player extends Entity {
 				Tile t = Climber.tiles[r][c];
 				if (t!=null) {
 					if (player.isBoundingBoxesColliding(t.getPixtact())) {
-						t.life--;
-						t.startKilling();
 						if (t.life<=0) {
 							Climber.tiles[r][c] = null;
 						} else {
 							if (player.getY()+player.getHeight()>=t.getY() && yVel<0) {
 								yVel = 0;
+								t.life--;
+								t.startKilling();
+								jumping = false;
 							}
 							if (yVel==0) {
 								player.setY(t.getY()-player.getHeight());
 							}
-							jumping = false;
 							return;
 						}
 					}
@@ -115,7 +115,7 @@ public class Player extends Entity {
         	player.changeImage(IDLE_RIGHT);
         }
         if (buttons.get(1) && !jumping){
-        	yVel = 15*40/Climber.speed;
+        	yVel = 10*40/Climber.speed;
 			jumping = true;
         }
 	} 

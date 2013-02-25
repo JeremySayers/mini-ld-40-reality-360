@@ -22,6 +22,7 @@ public class Intro extends Level {
 	public int ticks = 0;
 	public int closedTicks = 0;
 	public boolean credits = false;
+	private float y = 50;
 	private static final Image menubg = Reality360.loadImage("/title.jpg");
 	private static final Menu menu = new Menu(" ");
 	private static int start = 0;
@@ -202,5 +203,14 @@ public class Intro extends Level {
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
+		if (yAxis>40 && yAxis<60 && y<40) {
+			menu.selectorUp();
+		} else if (yAxis>40 && yAxis<60 && y>60) {
+			menu.selectorDown();
+		}
+		if (buttons.get(1)) {
+			menu.select();
+		}
+		y  = yAxis;
 	}
 }

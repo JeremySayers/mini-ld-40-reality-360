@@ -22,7 +22,7 @@ public class Climber extends Level {
 	private static final Pixtact DOOR = Reality360.loadAsPixtact("/Ethernet.png");
 	public static int speed = 20;
 	public int distance = 0;
-	public int maxDistance = 1000;
+	public int maxDistance = 600;
 	private boolean end = false;
 	private boolean move = false;
 	public Climber() {
@@ -65,7 +65,7 @@ public class Climber extends Level {
 					tiles[row][start+c] = createTile();
 				}
 			} else if (ty<0.6) {
-				int start = Math.min(19, Math.max(len, Math.min(li-len-sep, li+sep+len)));
+				int start = Math.min(19, Math.max(len, Math.min(ri-len-sep, li+sep+len)));
 				for (int c=0;c<len;c++) {
 					tiles[row][start-c] = createTile();
 				}
@@ -111,8 +111,6 @@ public class Climber extends Level {
 		if (distance-maxDistance<0) { 
 			BufferedImage img = Words.menuWord(""+(maxDistance-distance), 20, 20);
 			g.drawImage(img, Reality360.WIDTH/2-img.getWidth()/2, img.getHeight()*2, null);
-			BufferedImage img2 = Words.menuWord(""+Runtime.getRuntime().freeMemory(), 20, 20);
-			g.drawImage(img2, Reality360.WIDTH/2-img2.getWidth()/2, img2.getHeight()*4, null);
 		} else {
 			DOOR.drawImage(g);
 		}
