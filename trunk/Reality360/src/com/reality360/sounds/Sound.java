@@ -1,6 +1,7 @@
 package com.reality360.sounds;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -15,9 +16,10 @@ public class Sound {
 	private boolean playing = false;
 	private boolean stopped = false;
 	private boolean loop = false;
-
+	private static ArrayList<Sound> instances = new ArrayList<Sound>();
 	public Sound(final String path, boolean loopSound) {
 		loop = loopSound;
+		instances.add(this);
 		try {
 			new Thread(){
 				public void run() {
@@ -32,13 +34,20 @@ public class Sound {
 									false);
 							rawplay(decodedFormat, AudioSystem.getAudioInputStream(decodedFormat, ais));
 						} while (loop && !stopped);
+						instances.remove(this);
 					} catch (Exception e) {
-						e.printStackTrace();
+						instances.remove(this);
 					} 
 				}
 			}.start();
 		} catch (Exception e) {
-			e.printStackTrace();
+			instances.remove(this);
+		}
+	}
+	
+	public static void stopAll() {
+		for (Sound s:instances) {
+			s.pause();
 		}
 	}
 

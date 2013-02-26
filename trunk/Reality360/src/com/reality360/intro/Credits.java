@@ -74,7 +74,15 @@ public class Credits extends Level {
 							"\n" +
 							"We would also like to thank Hitler, Satan, and Big Foot for their ideas!\n" +
 							"\n" +
-							"This is Team Tibbles entry for Mini Ludum Dare #40 (Real World)";
+							"This is Team Tibbles entry for Mini Ludum Dare #40 (Real World)\n" +
+							"\n" +
+							"Audio:\n" +
+							"    Chocolate Rain by Tay Zonday\n" +
+							"    Through The Fire And The Flames by DragonForce\n" +
+							"    Biscuits by Unicorn Kid\n" +
+							"    Made Wildlife by Unicorn Kid\n" +
+							"    Monkey Island by Dubmood\n" +
+							" \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b \b";
 					d = 5;
 					for (String m:msg.split("\n")) {
 						x = 5;

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import com.reality360.GamePanel;
 import com.reality360.Reality360;
+import com.reality360.climber.Climber;
 import com.reality360.resource.Entity;
 import com.reality360.resource.RotateImage;
 
@@ -31,6 +32,7 @@ public class Player extends Entity {
 	Image charLeftIdle, charRightIdle, charLeftMoving, charRightMoving, charJumping;
 	
 	private int downY, upY, leftX, rightX, upLeft, downLeft, upRight, downRight, xTile, yTile;
+	private boolean down = false;
 	
 	private int jumpStart = -18;
 	private boolean isJumping = false;
@@ -79,7 +81,7 @@ public class Player extends Entity {
 		    }
 		  }
 		  if (yVel == 1) {
-		    if (downLeft == 0 && downRight == 0) {
+		    if ((downLeft == 0 && downRight == 0) || (down && downLeft==-2 && downRight==-2)) {
 		      speed++;
 		      y += speed*yVel;
 		    } else if (checkTeleportCondition(downLeft, downRight) != 9999){
@@ -134,21 +136,36 @@ public class Player extends Entity {
 			return 0;
 		} else if (tile1 == 9 && tile1==9) {
 			return 444;
+		} else if (tile1 == 10 && tile2==10) {
+			return 777;
+		} else if (tile1 == -5 && tile2==-5) {
+			return 5;
 		} else {
 			return 9999;
 		}
 	}
 	public void teleport(int roomNum){
 		if  (roomNum == 666){
-			Platform.secretTick = 180;
-			Platform.secrets[3] = true;
+			if (!Platform.secrets[3]) {
+				Platform.secretTick = 180;
+				Platform.secrets[3] = true;
+			}
+			Platform.changing = 3;
 		} else if (roomNum == 444) {
-			if (Platform.currentRoom==0) {
+			if (Platform.currentRoom==0 && !Platform.secrets[2]) {
 				Platform.secretTick = 180;
 				Platform.secrets[2] = true;
+				Platform.changing = 2;
 			} else {
 				Platform.end = true;
+				Platform.changing = 2;
 			}
+		} else if (roomNum==777) {
+			if (!Platform.secrets[4]) {
+				Platform.secretTick = 180;
+				Platform.secrets[4] = true;
+			}
+			Platform.changing = 4;
 		} else {
 			Platform.changeRoom(roomNum);
 			x = 60;
@@ -158,6 +175,9 @@ public class Player extends Entity {
 				Platform.secretTick = 180;
 			} else if (roomNum==4 && !Platform.secrets[1]) {
 				Platform.secrets[1] = true;
+				Platform.secretTick = 180;
+			} else if (roomNum==5 && !Platform.secrets[5]) {
+				Platform.secrets[5] = true;
 				Platform.secretTick = 180;
 			}
 		}
@@ -344,14 +364,16 @@ public class Player extends Entity {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+			down = true;
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getKeyCode()==KeyEvent.VK_DOWN) {
+			down = false;
+		}
 	}
 
 	@Override
@@ -362,7 +384,6 @@ public class Player extends Entity {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -391,7 +412,7 @@ public class Player extends Entity {
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
-		
+		down = xAxis>60;
 	}
 
 	@Override

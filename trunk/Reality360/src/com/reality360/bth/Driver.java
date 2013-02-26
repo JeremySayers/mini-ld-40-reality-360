@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import com.reality360.Reality360;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
+import com.reality360.sounds.Sound;
 import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class Driver extends Level{
@@ -25,8 +26,9 @@ public class Driver extends Level{
 	private boolean playable;
 	private int startTick;
 	private boolean button1;
-	
+	public static final Sound snd = new Sound("/com/reality360/sounds/DragonForce-TTFATF.mp3", true);
 	public Driver(){
+		Sound.stopAll();
 		background1 = Pixtact.read(getClass().getResource("/bthBackground.png"));
 		background2 = Pixtact.read(getClass().getResource("/bthBackground2.png"));
 		background1.resize(900,700);
@@ -36,6 +38,7 @@ public class Driver extends Level{
 		projectiles = new ArrayList<PlayerProjectile>();
 		pickups = new ArrayList<Pickup>();
 		player = new PlayerShip();
+		snd.play();
 	}
 	public void paint(Graphics g) {
 		
