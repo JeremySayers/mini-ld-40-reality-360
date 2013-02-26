@@ -10,7 +10,6 @@ public class Enemy extends AI{
 	protected int hitPoints = 0,deathCount=0;
 	protected double locationAngle = 0.00;
 	protected boolean inPosition = false, isDying = false;
-	protected Image[] deathSeq = new Image[4];
 	protected int shortest = 0;
 	protected int longest = 0;
 	protected int numerator = 0;
@@ -56,7 +55,12 @@ public class Enemy extends AI{
 		hitPoints -= damage;
 	}
 	public void tick(){
-		if(isDying && deathCount>40)isAlive=false;
+		if(isDying && deathCount>40){
+			shortest = (int)(Math.random()*100.0);
+			if(shortest>=50) Driver.pickups.add(new Pickup(xPos,yPos,5,1,true));
+			else if(shortest>=30) Driver.pickups.add(new Pickup(xPos,yPos,10,1,false));
+			isAlive=false;
+		}
 		if(hitPoints<=0){
 			isDying=true;
 			deathCount++;

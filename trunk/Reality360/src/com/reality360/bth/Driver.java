@@ -20,7 +20,7 @@ public class Driver extends Level{
 	public static ArrayList<PlayerProjectile> projectiles;
 	public static ArrayList<Pickup> pickups;
 	public static PlayerShip player;
-	private int scrolldistance1 = 0, scrolldistance2 = -700, tickCount = 18000;
+	private int scrolldistance1 = 0, scrolldistance2 = -700, tickCount = 10800;
 	private Pixtact background1, background2;
 	private boolean instructions;
 	private boolean playable;
@@ -71,7 +71,12 @@ public class Driver extends Level{
 				p.paint(g);
 			}
 		}
-		g.drawImage(Words.menuWord(Integer.toString(tickCount/60),20,20),400,10,Integer.toString(tickCount/60).length()*20,20,null);
+		synchronized(pickups){
+			for(Pickup p:pickups){
+				p.paint(g);
+			}
+		}
+		g.drawImage(Words.menuWord(Integer.toString(tickCount/60),20,20),110,570,Integer.toString(tickCount/60).length()*20,20,null);
 		
 		if (instructions) {
 			g.setColor(new Color(255, 255, 255, 192));
@@ -182,19 +187,41 @@ public class Driver extends Level{
 					}
 				}
 			}
-			if(tickCount%120==0){
-				if(tickCount/60>280){
-					if(enemies.size()<3)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,10));
-					else if(Math.random()*100>=90) enemies.add(new WallEnemy(15,(Math.random()>.5)));
-				}else if(tickCount/60>240){
-					if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,20));
-					else if(Math.random()*100>=80) enemies.add(new WallEnemy(30,(Math.random()>.5)));
-				}else if(tickCount/60>200){
-					if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,30));
-					else if(Math.random()*100>=70) enemies.add(new WallEnemy(50,(Math.random()>.5)));
-				}else if(tickCount/60>150){
-					
+		}
+		synchronized(pickups){
+			for(int i=0; i<pickups.size(); i++){
+				if(!pickups.get(i).isAlive()){
+					pickups.remove(i);
+					i--;
+				}else{
+					pickups.get(i).tick();
+					if(pickups.get(i).isHit(Driver.player.getImg())){
+						if(pickups.get(i).isHealth()) Driver.player.pickupHealth(pickups.get(i).getVal());
+						else Driver.player.pickupDmg(pickups.get(i).getVal());
+						pickups.get(i).kill();
+					}
 				}
+			}
+		}
+		if(tickCount%120==0){
+			if(tickCount/60>180){
+				if(enemies.size()<3)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,10*player.getPower()));
+				else if(Math.random()*100>=90) enemies.add(new WallEnemy(10*player.getPower(),(Math.random()>.5)));
+			}else if(tickCount/60>150){
+				if(enemies.size()<5)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,20*player.getPower()));
+				else if(Math.random()*100>=80) enemies.add(new WallEnemy(15*player.getPower(),(Math.random()>.5)));
+			}else if(tickCount/60>120){
+				if(enemies.size()<8)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,30*player.getPower()));
+				else if(Math.random()*100>=50) enemies.add(new WallEnemy(30*player.getPower(),(Math.random()>.5)));
+			}else if(tickCount/60>90){
+				if(enemies.size()<10)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,40*player.getPower()));
+				else if(Math.random()*100>=50) enemies.add(new WallEnemy(40*player.getPower(),(Math.random()>.5)));
+			}else if(tickCount/60>60){
+				if(enemies.size()<10)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,40*player.getPower()));
+				else if(Math.random()*100>=50) enemies.add(new WallEnemy(40*player.getPower(),(Math.random()>.5)));
+			}else if(tickCount/60>0){
+				if(enemies.size()<10)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,40*player.getPower()));
+				else if(Math.random()*100>=50) enemies.add(new WallEnemy(40*player.getPower(),(Math.random()>.5)));
 			}
 			tickCount--;
 			scrolldistance1++;
@@ -217,12 +244,8 @@ public class Driver extends Level{
 			player.keyReleased(e);
 		}
 	}
-	public void mousePressed(MouseEvent e) {
-		
-	}
-	public void mouseReleased(MouseEvent e) {
-		
-	}
+	public void mousePressed(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {}
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
 			float xAxis, float xRot, float yAxis, float yRot, float zAxis,
 			float zRot) {
@@ -238,14 +261,6 @@ public class Driver extends Level{
 			player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
 		}
 	}
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseMoved(MouseEvent e) {}
+	public void mouseDragged(MouseEvent e) {}
 }

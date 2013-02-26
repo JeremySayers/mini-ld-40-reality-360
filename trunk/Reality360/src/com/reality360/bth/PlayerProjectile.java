@@ -7,15 +7,14 @@ public class PlayerProjectile extends AI{
 	
 	private int damage = 0;
 	
-	public PlayerProjectile(int xPos, int yPos, int speed, boolean superBullet){
+	public PlayerProjectile(int xPos, int yPos, int speed, int damage, boolean superBullet){
 		super(xPos,yPos,0,speed);
 		if(!superBullet){
 			img = Pixtact.read(getClass().getResource("/redbullet.png"));
-			damage = 1;
 		}else{
 			img = Pixtact.read(getClass().getResource("/SuperBullet.png"));
-			damage = 3;
 		}
+		this.damage = damage;
 		width = 8;
 		height = 8;
 		img.resize(width, height);
