@@ -11,8 +11,10 @@ import java.util.Random;
 
 import com.reality360.GamePanel;
 import com.reality360.Reality360;
+import com.reality360.climber.Climber;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
+import com.reality360.sounds.Sound;
 
 
 public class Platform extends Level {
@@ -21,21 +23,32 @@ public class Platform extends Level {
 	static int[][] tiles;
 	Random r = new Random();
 	Image bg, tile1,tele2,tele3,tele4,tele5,tele6,tele7;
-	private boolean instructions = false;
+	private static boolean instructions = false;
 	private boolean playable = false;
 	private int startTick;
 	private boolean button1;
 	private boolean next = false;
 	private int endTick = 0;
+	private Image tele10;
+	private static boolean hasShownInstructions = false;
 	public static boolean end = false;
 	public static int secretTick = 0;
-	public static boolean[] secrets = new boolean[]{false, false, false, false};
+	/*
+	 * 0 - Jump to Room 0 (Off Of Room 1)
+	 * 1 - Special Room [AKA Room 4] (Off Of Room 0)
+	 * 2 - Jump to Next Level [AKA Boss] (In Room 0)
+	 * 3 - Special Level - Defend The Base (Off Of Room 4 or 5)
+	 * 4 - Backwards Portal [AKA Climbing] (Off Of Room 5)
+	 * 5 - Special Room [AKA Room 5] (Off Of Room 3)
+	 */
+	public static boolean[] secrets = new boolean[]{false, false, false, false, false, false};
 	public static int currentRoom = 0;
+	public static final Sound snd = new Sound("/com/reality360/sounds/SideScroller.mp3", true);
+	public static int changing = 0;
 	public Platform(){
+		Sound.stopAll();
 		end = false;
-		secretTick = 0;
-		currentRoom = 0;
-		secrets = new boolean[secrets.length];
+		changing = 0;
 		rooms = new Room(currentRoom);
 		tiles= rooms.getCurrentRoom();
 		bg = Reality360.loadImage("/Background1.png",900,700);
@@ -46,6 +59,8 @@ public class Platform extends Level {
 		tele5 = Reality360.loadImage("/cc_hologear4.png",40,40);
 		tele6 = Reality360.loadImage("/TileSquare.png",40,40);
 		tele7 = Reality360.loadImage("/TileSquareBinary.png",40,40);
+		tele10 = Reality360.loadImage("/TileSquareBinary1.png",40,40);
+		snd.play();
 	}	
 	public static void changeRoom(int roomNum){
 		rooms = new Room(roomNum);
@@ -57,7 +72,7 @@ public class Platform extends Level {
 			startTick ++;
 		} else if (instructions) {
 			
-		} else if (!secrets[2] && !secrets[3]){
+		} else if (changing==0){
 			player.fall();
 			player.jump();
 			player.updateKeys();
@@ -66,7 +81,7 @@ public class Platform extends Level {
 
 	@Override
 	public void keyPressed(KeyEvent event) {
-		if (!instructions && !secrets[2] && !secrets[3]) {
+		if (!instructions && changing==0) {
 			if (event.getKeyCode()==KeyEvent.VK_LEFT)
 				player.setMovingLeft(true);
 			if (event.getKeyCode()==KeyEvent.VK_RIGHT) 
@@ -74,6 +89,7 @@ public class Platform extends Level {
 			if (event.getKeyCode()==KeyEvent.VK_SPACE){
 				player.setJumpKey(true);
 			}
+			player.keyPressed(event);
 		}
 	}
 
@@ -84,7 +100,7 @@ public class Platform extends Level {
 				instructions = false;
 				playable = true;
 			}
-		} else if (!secrets[2] && !secrets[3]) {
+		} else if (changing==0) {
 			if (event.getKeyCode()==KeyEvent.VK_LEFT){ 
 				player.setMovingLeft(false);
 			}
@@ -94,6 +110,7 @@ public class Platform extends Level {
 			if (event.getKeyCode()==KeyEvent.VK_SPACE ){ 
 				player.setJumpKey(false);
 			}
+			player.keyReleased(event);
 		}
 	}
 
@@ -114,7 +131,7 @@ public class Platform extends Level {
 		g.drawImage(bg,0-(player.getX()*100/800),0-(player.getY()*100/800),null);
 		for (int i = 0; i < 15; i++){
 			for (int j = 0; j < 20; j++){
-				if (tiles[i][j]== 1){
+				if (tiles[i][j]== 1 || tiles[i][j]== -2 || tiles[i][j]==-5){
 					g.drawImage(tile1,j*40,i*40,null);
 				} else if(tiles[i][j] == 2){
 					g.drawImage(tele2,j*40,i*40,null);
@@ -128,11 +145,14 @@ public class Platform extends Level {
 					g.drawImage(tele6, j*40, i*40, null);
 				} else if (tiles[i][j] == 7){
 					g.drawImage(tele7, j*40, i*40, null);
+				} else if (tiles[i][j] == 10){
+					g.drawImage(tele10, j*40, i*40, null);
 				}
 			}
 		}
 		player.paint(g);
 		if (instructions) {
+			hasShownInstructions = true;
 			g.setColor(new Color(255, 255, 255, 192));
 			g.fillRoundRect(50, 50, Reality360.WIDTH-100, Reality360.HEIGHT-100, 100, 100);
 			String msg = "C]LEVEL 2 - PLATFORM MAZE\n" +
@@ -144,7 +164,8 @@ public class Platform extends Level {
 					"\n" +
 					"Secondary Objective:\n" +
 					"\tTo find as many of the "+secrets.length+" secrets\n" +
-					"\tas possible\n"+
+					"\tas possible - Unlisted controls\n" +
+					"\tmay be needed\n"+
 					"\n" +
 					"Keyboard Controls:\n"+
 					"\tLeft Arrow Key - Go Left\n" +
@@ -154,8 +175,6 @@ public class Platform extends Level {
 					"Joystick Controls - Desktop Only:\n"+
 					"\tX Axis - Move Left or Right\n" +
 					"\tButton 2 - Jump\n" +
-					"\n" +
-					"\n" +
 					"\n" +
 					"\n" +
 					"\n" +
@@ -192,7 +211,11 @@ public class Platform extends Level {
 			g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
 			t -= 100;
 			if (t>0) {
-				instructions = true;
+				if (hasShownInstructions) {
+					playable = true;
+				} else {
+					instructions = true;
+				}
 			}
 		} else if (secretTick>0) {
 			if (secretTick%10<5) {
@@ -205,9 +228,12 @@ public class Platform extends Level {
 				g.drawImage(img, Reality360.WIDTH/2-img.getWidth()/2, img.getHeight()*4, null);
 			}
 			secretTick--;
-		} else if (secrets[2] || end ) {
+		} else if (changing==2 || end) {
 			if (next) {
 				GamePanel.level = new com.reality360.bth.Driver();
+				changing = 0;
+				end = false;
+				next = false;
 			} else {
 				endTick++;
 				g.setColor(Color.BLACK);
@@ -222,9 +248,30 @@ public class Platform extends Level {
 					next = true;
 				}
 			}
-		} else if (secrets[3]) {
+		} else if (changing==3) {
 			if (next) {
 				GamePanel.level = new com.reality360.levels.defendthebase.Driver();
+				changing = 0;
+				next = false;
+			} else {
+				endTick++;
+				g.setColor(Color.BLACK);
+				int h = (int)(Reality360.HEIGHT/2*(endTick/100.0));
+				g.setColor(Color.BLACK);
+				g.fillRect(0, 0, Reality360.WIDTH, h-5);
+				g.fillRect(0, Reality360.HEIGHT-h+5, Reality360.WIDTH, h);
+				g.setColor(Color.GREEN);
+				g.fillRect(0, h-5, Reality360.WIDTH, 5);
+				g.fillRect(0, Reality360.HEIGHT-h, Reality360.WIDTH, 5);
+				if (h>=Reality360.HEIGHT/2) {
+					next = true;
+				}
+			}
+		} else if (changing==4) {
+			if (next) {
+				GamePanel.level = new Climber();
+				changing = 0;
+				next = false;
 			} else {
 				endTick++;
 				g.setColor(Color.BLACK);
@@ -252,7 +299,7 @@ public class Platform extends Level {
 			}
 		} else if (button1) {
 			button1 = buttons.get(1);
-		} else if (!secrets[2] && !secrets[3]) {
+		} else if (changing==0) {
 			if (xAxis>60){
 	        	player.movePlayer(1,0,0);
 	        	player.setMovingRightIdle(true);
@@ -268,6 +315,7 @@ public class Platform extends Level {
 	        } else {
 	                player.setJumpKey(false);
 	        }
+	        player.joystickValues(stick, buttons, xAxis, xRot, yAxis, yRot, zAxis, zRot);
 		}
 	}
 	@Override

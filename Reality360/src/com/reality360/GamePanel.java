@@ -16,6 +16,7 @@ import com.reality360.intro.Ending;
 import com.reality360.intro.Intro;
 import com.reality360.levels.platform.Platform;
 import com.reality360.resource.Level;
+import com.reality360.sounds.Sound;
 import com.redsoxfan.libs.pixtact.Pixtact;
 
 public class GamePanel extends JPanel {
@@ -55,8 +56,10 @@ public class GamePanel extends JPanel {
 				} else if (arg0.getKeyCode()==KeyEvent.VK_E) {
 					level = new Ending();
 				} else if (arg0.getKeyCode()==KeyEvent.VK_I) {
+					Sound.stopAll();
 					INTRO.ticks = INTRO.closedTicks;
 					level = INTRO;
+					INTRO.snd.play();
 				}
 			}
 		});

@@ -41,6 +41,7 @@ public class Climber extends Level {
 		this(false);
 	}
 	public Climber(boolean skip) {
+		Sound.stopAll();
 		skipInfo = skip;
 		DOOR.move(400-DOOR.getWidth()/2, 540-DOOR.getHeight());
 		for (int i=0; i<16; i++) {
@@ -249,7 +250,7 @@ public class Climber extends Level {
 				if (size && player.getY()<DOOR.getY()+DOOR.getHeight()*2/3)
 					player.resize((int)(player.getWidth()-player.getWidth()/(10.0*speed)), (int)(player.getHeight()-player.getHeight()/(10.0*speed)));
 			} else if (next) {
-				snd.pause();
+				snd.stop();
 				GamePanel.level = new Platform();
 			} else {
 				endTick++;
@@ -289,7 +290,6 @@ public class Climber extends Level {
 			}
 		} else {
 			if (canRestart) {
-				snd.pause();
 				GamePanel.level = new Climber(true);
 			} else {
 				deadTick++;

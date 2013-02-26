@@ -23,6 +23,7 @@ public class Ending extends Level {
 	private static final Image bg = Reality360.loadImage("/ending.png");
 	public static final Sound snd = new Sound("/com/reality360/sounds/Ending.mp3", true);
 	public Ending() {
+		Sound.stopAll();
 		ticks = 0;
 		snd.play();
 	}

@@ -32,6 +32,7 @@ public class Intro extends Level {
 	private static int start = 0;
 	public static final Sound snd = new Sound("/com/reality360/sounds/ChocRain8b.mp3", true);
 	public Intro() {
+		Sound.stopAll();
 		ticks = 0;
 		menu.addSelection(new MenuFunction() {
 			public void run() {
@@ -63,6 +64,7 @@ public class Intro extends Level {
 				return "Credits";
 			}
 		});
+		snd.play();
 	}
 	public void keyPressed(KeyEvent e) {
 		
