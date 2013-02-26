@@ -18,6 +18,8 @@ public class Laser extends Bullet{
 //	public Laser(int yPos, int speed, int damage){
 //		super();
 //		vertical = true;
+//		img = Pixtact.read(getClass().getResource("/purplelaser.png"));
+//	    img.resize(23,14);
 //	}
 	public void tick(){
 		if(!vertical){

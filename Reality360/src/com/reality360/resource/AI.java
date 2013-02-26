@@ -35,6 +35,9 @@ public abstract class AI {
 	public void setY(int y){
 		this.yPos = y;
 	}
+	public void kill(){
+		isAlive=false;
+	}
 	public boolean isAlive(){
 		return isAlive;
 	}
@@ -51,7 +54,8 @@ public abstract class AI {
 		}
 	}
 	public boolean isHit(Pixtact p){
-		return img.isColliding(p);
+//		return img.isCollidion(p);
+		return img.isBoundingBoxesColliding(p);
 	}
 	public abstract void tick();
 }

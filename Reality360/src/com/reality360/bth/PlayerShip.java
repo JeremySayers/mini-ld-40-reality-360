@@ -1,5 +1,6 @@
 package com.reality360.bth;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -17,7 +18,8 @@ public class PlayerShip extends Entity{
 	private int width = 30, height = 30, xPos = 385, yPos = 550;
 	private long tickCount = 0;
 	private boolean isAlive = false, upKey = false, downKey = false, leftKey = false, rightKey = false, shooting = false;
-	private HealthBar hb;
+	private HealthBar hb, db;
+	private Color panelColor = new Color(150,150,150);
 	
 	public PlayerShip(){
 		img = Pixtact.read(getClass().getResource("/redbullet.png"));
@@ -29,6 +31,10 @@ public class PlayerShip extends Entity{
 		player.setX(xPos);
 		player.setY(yPos);
 		hb = new HealthBar(hitPoints,100,10);
+		db = new HealthBar(100,100,10);
+		db.setOverColor(255,170,0);
+		db.setUnderColor(100,100,100);
+		db.doDamage(100);
 		isAlive = true;
 	}
 	public int getX() {
@@ -72,14 +78,27 @@ public class PlayerShip extends Entity{
 	
 	public void doDamge(int damage){
 		hb.doDamage(damage);
+		db.doDamage(damage/5);
+	}
+	public void pickupHealth(int hp){
+		hb.heal(hp);
+	}
+	public void pickupDmg(int dmg){
+		db.heal(dmg);
 	}
 	public int getHP(){
 		return hb.currentHp();
 	}
+	public int getPower(){
+		return (db.currentHp()>0)?db.currentHp():1;
+	}
 	public void paint(Graphics g) {
 		player.drawImage(g);
 		img.drawImage(g);
-		hb.drawBar(350,590,g);
+		g.setColor(panelColor);
+		g.fillRect(0,565,175,35);
+		hb.drawBar(5,585,g);
+		db.drawBar(5,570,g);
 	}
 	public void tick() {
 		if(upKey){
@@ -98,33 +117,35 @@ public class PlayerShip extends Entity{
 			player.setX(xPos+width<Reality360.WIDTH?xPos+=speed:xPos);
 			img.setX(player.getX()+10);
 		}
+		
 		if(powerLevel<30){
 			if(shooting&&tickCount==0){
-				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,8,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,8,powerLevel,false));
 				tickCount=5;
 			}
 		}else if(powerLevel>=30 && powerLevel<60){
 			if(shooting&&tickCount==0){
-				Driver.projectiles.add(new PlayerProjectile(xPos,yPos,7,false));
-				Driver.projectiles.add(new PlayerProjectile(xPos+width,yPos,7,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos,yPos,7,powerLevel,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos+width,yPos,7,powerLevel,false));
 				tickCount=6;
 			}
 		}else if(powerLevel>=60 && powerLevel<90){
 			if(shooting&&tickCount==0){
-				Driver.projectiles.add(new PlayerProjectile(xPos,yPos,6,false));
-				Driver.projectiles.add(new PlayerProjectile(xPos+width,yPos,6,false));
-				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,6,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos,yPos,6,powerLevel,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos+width,yPos,6,powerLevel,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,6,powerLevel,false));
 				tickCount=8;
 			}
 		}else{
 			if(shooting&&tickCount==0){
-				Driver.projectiles.add(new PlayerProjectile(xPos,yPos,5,false));
-				Driver.projectiles.add(new PlayerProjectile(xPos+width,yPos,5,false));
-				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,5,false));
-				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,8,true));
+				Driver.projectiles.add(new PlayerProjectile(xPos,yPos,5,powerLevel,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos+width,yPos,5,powerLevel,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,5,powerLevel,false));
+				Driver.projectiles.add(new PlayerProjectile(xPos+width/2,yPos,8,powerLevel,true));
 				tickCount=10;
 			}
 		}
+		powerLevel=1+db.currentHp();
 		if(tickCount>0)tickCount--;
 	}
 	public void joystickValues(boolean stick, ArrayList<Boolean> buttons,
