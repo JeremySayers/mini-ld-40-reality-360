@@ -31,6 +31,7 @@ public class DesktopReality360 {
 	public DesktopReality360() {
 		Reality360.showOutput(false);
 		FRAME.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		FRAME.setIconImage(Reality360.loadImage("/Boss.png"));
 		FRAME.setLayout(new BorderLayout());
 		FRAME.add(GAME, BorderLayout.CENTER);
         GAME.setPreferredSize(new Dimension(WIDTH, HEIGHT));
