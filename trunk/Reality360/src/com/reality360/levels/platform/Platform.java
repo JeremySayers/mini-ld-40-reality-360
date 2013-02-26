@@ -12,6 +12,7 @@ import java.util.Random;
 import com.reality360.GamePanel;
 import com.reality360.Reality360;
 import com.reality360.climber.Climber;
+import com.reality360.intro.Ending;
 import com.reality360.menu.Words;
 import com.reality360.resource.Level;
 import com.reality360.sounds.Sound;
@@ -37,8 +38,8 @@ public class Platform extends Level {
 	 * 0 - Jump to Room 0 (Off Of Room 1)
 	 * 1 - Special Room [AKA Room 4] (Off Of Room 0)
 	 * 2 - Jump to Next Level [AKA Boss] (In Room 0)
-	 * 3 - Special Level - Defend The Base (Off Of Room 4 or 5)
-	 * 4 - Backwards Portal [AKA Climbing] (Off Of Room 5)
+	 * 3 - Backwards Portal [AKA Climbing] (Off Of Room 4 or 5)
+	 * 4 - Jump to End (Off Of Room 5)
 	 * 5 - Special Room [AKA Room 5] (Off Of Room 3)
 	 */
 	public static boolean[] secrets = new boolean[]{false, false, false, false, false, false};
@@ -250,7 +251,7 @@ public class Platform extends Level {
 			}
 		} else if (changing==3) {
 			if (next) {
-				GamePanel.level = new com.reality360.levels.defendthebase.Driver();
+				GamePanel.level = new Climber();
 				changing = 0;
 				next = false;
 			} else {
@@ -269,7 +270,7 @@ public class Platform extends Level {
 			}
 		} else if (changing==4) {
 			if (next) {
-				GamePanel.level = new Climber();
+				GamePanel.level = new Ending();
 				changing = 0;
 				next = false;
 			} else {
