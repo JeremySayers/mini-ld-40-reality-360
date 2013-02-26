@@ -223,11 +223,11 @@ public class Driver extends Level{
 				if(enemies.size()<10)enemies.add(new Enemy((int)(Math.random()*100.0)+300,-50,(int)(Math.random()*500.0)+50,(int)(Math.random()*100.0)+100,40*player.getPower()));
 				else if(Math.random()*100>=50) enemies.add(new WallEnemy(40*player.getPower(),(Math.random()>.5)));
 			}
-			tickCount--;
-			scrolldistance1++;
-			scrolldistance2++;
-			player.tick();
 		}
+		tickCount--;
+		scrolldistance1++;
+		scrolldistance2++;
+		player.tick();
 	}
 	public void keyPressed(KeyEvent e) {
 		if (!instructions) {
